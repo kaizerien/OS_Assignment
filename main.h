@@ -11,15 +11,9 @@
 
 struct node{
     int index;
-    //int blockNo;
+    int blockNo;
     char data[MAX_STRING_SIZE];
-    //struct block blockData;
-};
-
-// struct block{
-//     int blockNo;
-//     struct node *entryNode;
-// };
+}node[MAX_BLOCK];
 
 int blockSize;
 float noOfBlocks;

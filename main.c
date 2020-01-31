@@ -17,6 +17,7 @@ int main(void)
     unsigned char input[20];
     unsigned int choice = 0;
     unsigned int format = 0;
+    int counter = 0, blockIndex = 0;
 
     do
     {
@@ -45,7 +46,6 @@ int main(void)
 
     } while (format != 1);
 
-    struct node nodeList[MAX_BLOCK];
     do
     {
         printf("\nEnter required block size: ");
@@ -55,17 +55,18 @@ int main(void)
     noOfBlocks = (float)MAX_BLOCK / blockSize; // If is 5 , 26 block is created
 
     noOfBlocks = ((noOfBlocks - (int)noOfBlocks) != 0 ) ? noOfBlocks - 1 : noOfBlocks;
-    int counter = 0, blockIndex = 0;
 
     
     printf("Block\t\tIndex\tFile Data\n");
 
     while (counter < MAX_BLOCK)
     {
-        for (int j = 0; j < blockSize; j++)
+        for (j = 0; j < blockSize; j++)
         {
-            (counter == MAX_BLOCK) ? j = blockSize : (noOfBlocks < blockIndex) ? printf("Unassigned\t%d\n", counter++): printf("%d\t\t%d\n", blockIndex, counter++); 
-          
+            node[j].blockNo = blockIndex;
+            node[j].index = counter;
+            (counter == MAX_BLOCK) ? j = blockSize : (noOfBlocks < blockIndex) ? printf("Unassigned\t%d\n", node[j].index): printf("%d\t\t%d\n", node[j].blockNo, node[j].index); 
+            counter++;
         }
         blockIndex++;
     }
