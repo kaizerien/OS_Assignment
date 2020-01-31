@@ -70,44 +70,6 @@ int main(void)
         blockIndex++;
     }
 
-    //Block size
-    // do{
-    //     printf("\nEnter required block size: ");
-    //     scanf("%s", &input);
-    //     blockSize = atoi(input);
-    //     if(blockSize < 0 || 130%blockSize != 0) //Ensure that the block can be divisible
-    //         printf("Invalid entry, please enter between 1 - 10");
-    // }while(blockSize < 0 || 130%blockSize != 0);
-    //noOfBlocks = MAX_BLOCK/blockSize; // If is 5 , 26 block is created
-
-    // struct block *blocks; //Create one block
-    // blocks = calloc(noOfBlocks, sizeof(char) * MAX_STRING_SIZE); //Create an array to store the block inside
-
-    // for(i = 0; i < noOfBlocks; i++){
-    //     blocks[i].entryNode = malloc(sizeof(struct node *) * blockSize);
-    //     for(int j = 0; j < 4; j++)
-    //     {
-    //       blocks[i].entryNode[i].data[j] = '0';
-    //     }
-
-    // }
-    // blocks[1].entryNode[3].index = 1;
-
-    // blocks[1].entryNode[3].data[0] = '1';
-    // blocks[1].entryNode[3].data[1] = '0';
-    // blocks[1].entryNode[3].data[2] = '1';
-
-    // for(int j = 0; j < noOfBlocks; j++)
-    // {
-    //     printf("Block %d\n", j);
-    //     printf("Index\n");
-    //     for(int n = 0; n < blockSize; n++)
-    //     {
-    //         printf("%d\t%s\n", n, blocks[j].entryNode[n].data);
-    //     }
-    //     printf("---------------\n");
-    // }
-
     //File system choice
     do
     {
@@ -120,6 +82,7 @@ int main(void)
         }
         else if (choice == 2)
         {
+            
             //Space for Linked
         }
         else if (choice == 3)
