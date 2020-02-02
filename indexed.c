@@ -17,6 +17,7 @@ void indexed(){
     //1. Find out how to get array from readCSV
     //2. Once can read array, extract out file Num and file Data numbers
     //3. Find once find empty node, store file data and tag file variable for node.
+    //4. For index block 0, 
 
     
     // for (j=0; j<50; j++){
