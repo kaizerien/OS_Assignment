@@ -9,6 +9,9 @@ Description:
 
 #include "main.h"
 #include "readCSV.c"
+#include "readCSV.h"
+#include "indexed.c"
+#include "indexed.h"
 
 int main(void)
 {
@@ -18,7 +21,7 @@ int main(void)
     unsigned int choice = 0;
     unsigned int format = 0;
     int counter = 0, blockIndex = 0;
-
+    void indexed();
     do
     {
         printf("Type Y to format File System or N to exit\n");
@@ -52,64 +55,45 @@ int main(void)
         scanf("%s", &input);
         blockSize = atoi(input);
     } while (blockSize < 0 || blockSize > 130);
-    noOfBlocks = (float)MAX_BLOCK / blockSize; // If is 5 , 26 block is created
+    noOfBlocks = (float)MAX_BLOCK / blockSize; // If is 6 , 20 block is created
 
-    noOfBlocks = ((noOfBlocks - (int)noOfBlocks) != 0 ) ? noOfBlocks - 1 : noOfBlocks;
+    noOfBlocks = ((noOfBlocks - (int)noOfBlocks) != 0 ) ? noOfBlocks - 1 : noOfBlocks; // Once divided, if it is not a whole number, the noOfBlocks will -1.
 
     
     printf("Block\t\tIndex\tFile Data\n");
 
-    while (counter < MAX_BLOCK)
+    while (counter < MAX_BLOCK) //Counter 0 to 130
     {
-        for (j = 0; j < blockSize; j++)
-        {
-            node[j].blockNo = blockIndex;
-            node[j].index = counter;
-            (counter == MAX_BLOCK) ? j = blockSize : (noOfBlocks < blockIndex) ? printf("Unassigned\t%d\n", node[j].index): printf("%d\t\t%d\n", node[j].blockNo, node[j].index); 
-            counter++;
+        // for (j = 0; j < blockSize; j++) //0 to input blockSize, e.g. 0 to 5
+        // {
+        //     node[j].index = counter;
+        //     node[j].blockNo = blockIndex; //Assign e.g. Node 0 to 5 with block Index 0 for first iteration, and 6 to 11 with block Index 1 and so on.
+
+        //     //If counter == 130 entries, j = blockSize to stop the for loop, if not then another if statement. 
+        //     // If noOfBlocks less than blockIndex e.g. noOfBlocks is 20, blockIndex will continue over 20, will print "unassigned" and Index. If false, will print Block No, and Index.
+        //     (counter == MAX_BLOCK) ? j = blockSize : (noOfBlocks < blockIndex) ? printf("Unassigned\t%d\n", node[j].index): printf("%d\t\t%d\n", node[j].blockNo, node[j].index); 
+        //     counter++;
+        // }
+        // blockIndex++; //Keep iterating +1 so can use in for loop to assign.
+        node[counter].index = counter;  //Set index 
+        strcpy(node[counter].data, "\0");   //Set data to empty for all nodes     
+        
+        if (node[counter].index % blockSize-1 == 0 && node[counter].index != 0 && node[counter].index != 1){
+            blockIndex++;
         }
-        blockIndex++;
+        
+        node[counter].blockNo = blockIndex;
+
+        printf("%d\t\t%d\t\t%d\n", node[counter].blockNo, node[counter].index, blockIndex); 
+        counter++;
+
     }
-
-    //Block size
-    // do{
-    //     printf("\nEnter required block size: ");
-    //     scanf("%s", &input);
-    //     blockSize = atoi(input);
-    //     if(blockSize < 0 || 130%blockSize != 0) //Ensure that the block can be divisible
-    //         printf("Invalid entry, please enter between 1 - 10");
-    // }while(blockSize < 0 || 130%blockSize != 0);
-    //noOfBlocks = MAX_BLOCK/blockSize; // If is 5 , 26 block is created
-
-    // struct block *blocks; //Create one block
-    // blocks = calloc(noOfBlocks, sizeof(char) * MAX_STRING_SIZE); //Create an array to store the block inside
-
-    // for(i = 0; i < noOfBlocks; i++){
-    //     blocks[i].entryNode = malloc(sizeof(struct node *) * blockSize);
-    //     for(int j = 0; j < 4; j++)
-    //     {
-    //       blocks[i].entryNode[i].data[j] = '0';
-    //     }
-
-    // }
-    // blocks[1].entryNode[3].index = 1;
-
-    // blocks[1].entryNode[3].data[0] = '1';
-    // blocks[1].entryNode[3].data[1] = '0';
-    // blocks[1].entryNode[3].data[2] = '1';
-
-    // for(int j = 0; j < noOfBlocks; j++)
-    // {
-    //     printf("Block %d\n", j);
-    //     printf("Index\n");
-    //     for(int n = 0; n < blockSize; n++)
-    //     {
-    //         printf("%d\t%s\n", n, blocks[j].entryNode[n].data);
-    //     }
-    //     printf("---------------\n");
-    // }
-
-    //File system choice
+         
+    //Read CSV File
+    printf("Enter name of .csv file to read from\n");
+    scanf("%s", &input);
+    readCSV(input);
+    printf("after read");
     do
     {
         printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
@@ -125,7 +109,12 @@ int main(void)
         }
         else if (choice == 3)
         {
-            //  indexed();
+            printf("inside cehoice");
+
+            // for (j=0; j<50; j++){
+            // printf("CSV array: %s\n", CSV_Data[j]);
+            //  }
+            // indexed();
         }
         else if (choice == 4)
         {
@@ -135,8 +124,5 @@ int main(void)
             printf("Invalid choice, please enter between 1 - 4");
     } while (choice <= 0 || choice > 4);
 
-    //Read CSV File
-    printf("Enter name of .csv file to read from\n");
-    scanf("%s", &input);
-    readCSV(input);
+
 }
