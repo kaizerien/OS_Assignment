@@ -111,4 +111,6 @@ int main(void)
     printf("Enter name of .csv file to read from\n");
     scanf("%s", &input);
     readCSV(input);
+
+    return 1;
 }
