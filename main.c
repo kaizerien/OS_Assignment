@@ -9,6 +9,7 @@ Description:
 
 #include "main.h"
 #include "readCSV.c"
+#include "readCSV.h"
 #include "indexed.c"
 #include "indexed.h"
 
@@ -74,8 +75,9 @@ int main(void)
         //     counter++;
         // }
         // blockIndex++; //Keep iterating +1 so can use in for loop to assign.
-        node[counter].index = counter;
-
+        node[counter].index = counter;  //Set index 
+        strcpy(node[counter].data, "\0");   //Set data to empty for all nodes     
+        
         if (node[counter].index % blockSize-1 == 0 && node[counter].index != 0 && node[counter].index != 1){
             blockIndex++;
         }
