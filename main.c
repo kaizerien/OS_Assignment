@@ -93,7 +93,7 @@ int main(void)
     printf("Enter name of .csv file to read from\n");
     scanf("%s", &input);
     readCSV(input);
-    
+    printf("after read");
     do
     {
         printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
@@ -109,7 +109,12 @@ int main(void)
         }
         else if (choice == 3)
         {
-            indexed();
+            printf("inside cehoice");
+
+            // for (j=0; j<50; j++){
+            // printf("CSV array: %s\n", CSV_Data[j]);
+            //  }
+            // indexed();
         }
         else if (choice == 4)
         {
