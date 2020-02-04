@@ -1,4 +1,5 @@
 #include "readCSV.h"
+#include "linked.c"
 
 void readCSV(char input[]){
     register int count=0;
@@ -23,8 +24,11 @@ void getData(char buffer[])
    {
         //printf("%s\n",token);
         strcpy(CSV_Data[counter], token);
-        printf(CSV_Data[counter]);
+       // printf(CSV_Data[counter]);
         token = strtok(NULL,", ");
+
+        linked_allocation(CSV_Data[counter]);
+
         counter++; 
    }	  
 }

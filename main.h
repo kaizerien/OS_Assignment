@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <String.h>
+#include <ctype.h>
 
 #define NO_OF_STRING 50
 #define MAX_STRING_SIZE 100
@@ -16,6 +17,6 @@ struct node{
 }node[MAX_BLOCK];
 
 int blockSize;
-float noOfBlocks;
+int noOfBlocks;
 char CSV_Data[NO_OF_STRING][MAX_STRING_SIZE];
 #endif
