@@ -27,7 +27,7 @@ void getData(char buffer[])
        // printf(CSV_Data[counter]);
         token = strtok(NULL,", ");
 
-        linked_allocation(CSV_Data[counter]);
+        linked_allocation(CSV_Data[counter],counter);
 
         counter++; 
    }	  
