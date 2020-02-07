@@ -80,6 +80,7 @@ int check_new_block()
 
 int allocate_block(char *token)
 {
+    //printf("test %s", token);
     //int token_value = atoi(token);
     // int first_digit;
     // while(token_value >= 10)
@@ -133,6 +134,6 @@ int allocate_block(char *token)
     default:
         break;
     }
-
-    return (node[block_index + 1].blockNo != block_num && action == 1) ? allocate_block(token) : 1;
+    
+    return (node[block_index -1].data != atoi(token) && action == 1) ? allocate_block(token) : 1;
 }
