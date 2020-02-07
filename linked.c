@@ -1,6 +1,6 @@
 #include "linked.h"
 
-int action = 0, dir_counter = 0, block_index = 0, block_num;
+int action = 0, dir_counter = 0, block_index = 0, current_dir_num = 0, block_num;
 
 int randomIndex();
 int check_new_block();
@@ -40,37 +40,13 @@ int linked_allocation(char *token, int num)
         {
             allocate_block(token);
         }
+        else
+        {
+            /* code */
+        }
+        
     }
 
-    //     int dataNo = 0, start = 0, end = 0;
-    //     char temp[MAX_STRING_SIZE];
-    //     strcpy(temp, token);
-
-    //     printf("Block\t\tIndex\tFile Data\n");
-    //     while (dataNo)
-    //     {
-    //         int indexNumber;
-    //         //Find a empty data block to insert the data
-    //         do
-    //         {
-    //             indexNumber = randomIndex();
-    //         } while (node[indexNumber].data != 0);
-
-    //         if (dataNo)
-    //         {
-    //             node[indexNumber].data = -1;
-    //             end = indexNumber;
-    //             //blockDirectory(start, end, token, 0);
-    //         }
-    //         else
-    //         {
-    //         }
-    //     }
-
-    //     printf("%d\t\t%d\t%s\n", node[indexNumber].blockNo, node[indexNumber].index, node[indexNumber].data);
-    //     dataNo++;
-    // }
-    // return 1;
 }
 
 int randomBlock()
@@ -104,12 +80,20 @@ int check_new_block()
 
 int allocate_block(char *token)
 {
+    //int token_value = atoi(token);
+    // int first_digit;
+    // while(token_value >= 10)
+    // {
+    //     first_digit = token_value / 10;
+    // }
+
     //Choose the action
     switch (action)
     {
     case 1:
         node[block_index].filename = current_file_number;
-        if (node[block_index + 1].blockNo == block_num)
+        
+        if (node[block_index + 1].blockNo == block_num )
         {
             node[block_index].data = atoi(token);
             printf("%d\t\t%d\t%d\t%d\n", node[block_index].blockNo, node[block_index].index, node[block_index].data, node[block_index].filename);
