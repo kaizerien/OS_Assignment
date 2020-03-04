@@ -17,18 +17,17 @@ struct node
 {
     int index;
     int blockNo;
-    int data; 
+    char data[MAX_STRING_SIZE]; 
     int filename;
 } node[MAX_BLOCK];
 
-struct volume_control_block
+struct block
 {
-    int start;
-    int end;
-} vcb[NO_OF_VCB];
+    int blockNo;
+    struct node* entryNode;
+};
 
 int blockSize;
 int noOfBlocks;
 int current_file_number;
-char CSV_Data[NO_OF_STRING][MAX_STRING_SIZE];
 #endif

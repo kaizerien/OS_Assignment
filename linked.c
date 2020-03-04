@@ -31,7 +31,7 @@ int linked_allocation(char *token, int num)
     }
     else if (num == 1 && action == 1)
     {
-        vcb[0].start = check_new_block();
+        //vcb[0].start = check_new_block();
         current_file_number = atoi(token);
     }
     else if (action != 0)
@@ -104,7 +104,7 @@ int allocate_block(char *token)
         {
             int temp_index = block_index;
             node[temp_index].data = check_new_block();
-            vcb[0].end = node[temp_index].data;
+            //vcb[0].end = node[temp_index].data;
             printf("%d\t\t%d\t%d\t%d\n", node[temp_index].blockNo, node[temp_index].index, node[temp_index].data, node[temp_index].filename);
         }
 

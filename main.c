@@ -67,13 +67,12 @@ int main(void)
             //Block index will become -1, else it will be the current counter value
             node[counter].blockNo = (noOfBlocks < blockIndex) ? -1 : blockIndex;
             node[counter].index = counter;
-            node[counter].data = -1;
             node[counter].filename = 0;
 
             //(counter == MAX_BLOCK)
             //If the condition is true, j = block size
-            //Else noOfBlocks < blockIndex
-            (counter == MAX_BLOCK) ? j = blockSize : printf("%d\t\t%d\t%d\n", node[counter].blockNo, node[counter].index, node[counter].data);
+            //Else noOfB locks < blockIndex
+            (counter == MAX_BLOCK) ? j = blockSize : printf("%d\t\t%d\t%s\n", node[counter].blockNo, node[counter].index, node[counter].data);
             counter++;
         }
         blockIndex++;
@@ -107,8 +106,6 @@ int main(void)
         else
             printf("Invalid choice, please enter between 1 - 4");
     } while (choice <= 0 || choice > 4);
-
-    while(contiguous());
 
     return EXIT_SUCCESS;
 }
