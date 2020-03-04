@@ -31,7 +31,6 @@ int linked_allocation(char *token, int num)
     }
     else if (num == 1 && action == 1)
     {
-        vcb[0].start = check_new_block();
         current_file_number = atoi(token);
     }
     else if (action != 0)
@@ -71,7 +70,7 @@ int check_new_block()
     int current_index = block_index;
     for (int j = 0; j < blockSize; j++)
     {
-        current_space = current_space + node[current_index].data;
+        current_space = current_space + atoi(node[current_index].data);
         current_index++;
     }
 
@@ -96,16 +95,21 @@ int allocate_block(char *token)
         
         if (node[block_index + 1].blockNo == block_num )
         {
-            node[block_index].data = atoi(token);
-            printf("%d\t\t%d\t%d\t%d\n", node[block_index].blockNo, node[block_index].index, node[block_index].data, node[block_index].filename);
+            node[block_index].data = token;
+           // printf("%d\t\t%d\t%d\t%d\n", node[block_index].blockNo, node[block_index].index, node[block_index].data, node[block_index].filename);
             block_index++;
         }
         else
         {
             int temp_index = block_index;
-            node[temp_index].data = check_new_block();
-            vcb[0].end = node[temp_index].data;
-            printf("%d\t\t%d\t%d\t%d\n", node[temp_index].blockNo, node[temp_index].index, node[temp_index].data, node[temp_index].filename);
+            int new_block = check_new_block();
+
+            char c_new_block[20];
+            sprintf(c_new_block, "%d", new_block);
+
+            node[temp_index].data = c_new_block;
+            vcb[0].end = atoi(node[temp_index].data);
+         //   printf("%d\t\t%d\t%d\t%d\n", node[temp_index].blockNo, node[temp_index].index, node[temp_index].data, node[temp_index].filename);
         }
 
         break;
@@ -113,7 +117,7 @@ int allocate_block(char *token)
         printf("\nRead %s", token);
         for (int i = 0; i < MAX_BLOCK; i++)
         {
-            if (node[i].data == atoi(token))
+            if (node[i].data == token)
             {
                 printf("%d\t\t%d\t%d\t%d\n", node[i].blockNo, node[i].index, node[i].data, node[i].filename);
             }
@@ -127,7 +131,7 @@ int allocate_block(char *token)
             {
                 node[i].data = -1;
                 node[i].filename = 0;
-                printf("%d\t\t%d\t%d\t%d\n", node[i].blockNo, node[i].index, node[i].data, node[i].filename);
+                //printf("%d\t\t%d\t%d\t%d\n", node[i].blockNo, node[i].index, node[i].data, node[i].filename);
             }
         }
         break;

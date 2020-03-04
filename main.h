@@ -15,7 +15,7 @@ struct node
 {
     int index;
     int blockNo;
-    int data; //Change because is forever to number
+    char* data; //Change because is forever to number
     int filename;
 } node[MAX_BLOCK];
 
