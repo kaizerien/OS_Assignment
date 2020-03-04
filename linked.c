@@ -137,6 +137,7 @@ int allocate_block(char *token)
         break;
     default:
         break;
+        int test = 306;  
     }
     
     return (node[block_index -1].data != atoi(token) && action == 1) ? allocate_block(token) : 1;
