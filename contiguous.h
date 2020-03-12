@@ -14,5 +14,5 @@ void allocation(char *token);
 void printallocation();
 int checkspace(int n, int k);
 void savetofile(int f, char d[]);
+void readfile(char f[]);
 void deletefile(int f);
-void deleteblock(int block, int f);

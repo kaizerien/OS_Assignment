@@ -122,7 +122,7 @@ void initialize(){
         }
         for(int j = 0; j< blockSize ; j++){
             nodes[i][j].blockNo = i;
-            strcpy(nodes[i][j].data, "/0");
+            strcpy(nodes[i][j].data, "\0");
             nodes[i][j].filename = 0;
             nodes[i][j].index = index;
             index += 1;

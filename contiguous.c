@@ -40,7 +40,9 @@ void allocation(char *data){
             }
             break;
         case read:
-
+            if(atoi(data) != 0){
+                readfile(data);
+            }
             break;
         case delete:
             if(atoi(data) != 0 && atoi(data)%100 == 0){
@@ -64,31 +66,42 @@ void savetofile(int f, char d[]){
 }
 
 int checkspace(int n, int k){
-    if (strcmp(nodes[n][k].data, "/0") == 0 && nodes[n][k].filename == 0){
+    if (strcmp(nodes[n][k].data, "\0") == 0 && nodes[n][k].filename == 0){
         return TRUE;
     }else{
         return FALSE;
     }
 }
 
-void deletefile(int f){
-    int delblock = 0;
-    for(int i = 0; i < noOfBlocks; i++){
-        if(nodes[i][1].filename == f){
-            delblock = i;
-            deleteblock(delblock, f);
+void readfile(char f[]){
+    for(int i = 1; i< noOfBlocks; i++){
+        for(int j= 0; i< blockSize; j++){
+            if(strcmp(nodes[i][j].data, f) == 0){
+                printf("Block No: %i\n", (nodes[i][j].blockNo));
+                printf("Filename: %i\n", (nodes[i][j].filename));
+                return;
+            }
         }
     }
 }
 
-void deleteblock(int block, int f){
-    for(int j = 0; j< blockSize; j++){
-        if(nodes[block][j].filename == f){
-            nodes[block][j].filename = 0;
-            strcpy(nodes[block][j].data, "/0");
+void deletefile(int f){
+    int delblock = 0;
+    for(int i = 1; i < noOfBlocks; i++){
+        // if(nodes[i][1].filename == f){
+        //     delblock = i;
+        //     deleteblock(delblock, f);
+        // }
+        for(int j = 0; j< blockSize; j++){
+            if(nodes[i][j].filename == f){
+                nodes[i][j].filename = 0;
+                strcpy(nodes[i][j].data, "\0");
+                if(checkfree(i) == FALSE){
+                    updatefsm(i);
+                }
+            }
         }
     }
-    updatefsm(block);
 }
 
 void printallocation(){
