@@ -6,10 +6,8 @@
 #include <String.h>
 #include <ctype.h>
 
-#define NO_OF_STRING 50
 #define MAX_STRING_SIZE 100
 #define MAX_BLOCK 130
-#define NO_OF_VCB 50
 #define FALSE 0
 #define TRUE !(FALSE)
 
@@ -19,7 +17,6 @@ struct node
     int blockNo;
     char data[MAX_STRING_SIZE]; 
     int filename;
-    int free;
 }nodes[MAX_BLOCK][MAX_BLOCK];
 
 void initialize();
@@ -35,7 +32,11 @@ int extraSpace;
 
 
 void updatefsm(int block){
-    fsm[block - 1] = '1';
+    if(fsm[block - 1] == '0'){
+        fsm[block - 1] = '1';
+    }else{
+        fsm[block - 1] = '0';
+    }
 }
 
 int checkfsm(){
@@ -47,7 +48,7 @@ int checkfsm(){
 }
 
 int checkfree(int block){
-    if (fsm[block] == 0){
+    if (fsm[block-1] == '0'){
         return TRUE;
     }else{
         return FALSE;

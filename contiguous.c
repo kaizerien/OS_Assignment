@@ -1,6 +1,5 @@
 #include "contiguous.h"
 
-int curBlock = 0;
 
 int contiguous(void){
 
@@ -26,9 +25,17 @@ void allocation(char *data){
             if(atoi(data) != 0 && atoi(data)%100 == 0){
                 file_name = atoi(data);
                 curBlock = checkfsm();
+                filesize = 0;
             }else{
                 if(atoi(data)!=0){
-                    savetofile(file_name, data);
+                    filesize +=1;
+                    if(filesize > blockSize){
+                        curBlock = checkfsm();
+                        savetofile(file_name, data);
+                    }else{
+                        savetofile(file_name, data);
+                    }
+                    
                 }
             }
             break;
@@ -37,14 +44,16 @@ void allocation(char *data){
             break;
         case delete:
             if(atoi(data) != 0 && atoi(data)%100 == 0){
-                //strcpy(file_name, data);
+                deletefile(atoi(data));
             }
             break;
     }
 }
 
 void savetofile(int f, char d[]){
-    updatefsm(curBlock);
+    if(checkfree(curBlock) == TRUE){
+        updatefsm(curBlock);
+    }
     for(int j = 0; j < blockSize; j++){
         if(checkspace(curBlock, j) == TRUE){
             nodes[curBlock][j].filename = f;
@@ -62,6 +71,26 @@ int checkspace(int n, int k){
     }
 }
 
+void deletefile(int f){
+    int delblock = 0;
+    for(int i = 0; i < noOfBlocks; i++){
+        if(nodes[i][1].filename == f){
+            delblock = i;
+            deleteblock(delblock, f);
+        }
+    }
+}
+
+void deleteblock(int block, int f){
+    for(int j = 0; j< blockSize; j++){
+        if(nodes[block][j].filename == f){
+            nodes[block][j].filename = 0;
+            strcpy(nodes[block][j].data, "/0");
+        }
+    }
+    updatefsm(block);
+}
+
 void printallocation(){
     for(int i = 0; i < noOfBlocks; i++){
         for(int j = 0; j < blockSize; j++){
@@ -70,10 +99,10 @@ void printallocation(){
                 printf("Block No: %i\n", nodes[i][j].blockNo);
                 printf("Filename: %i\n", nodes[i][j].filename);
                 printf("Data: %s\n", nodes[i][j].data);
-                printf("FSM: %s\n", fsm);
             }
         }
     }
+    printf("FSM: %s\n", fsm);
 }
 
 void readCSV(char input[]){
