@@ -25,6 +25,7 @@ struct node
 void initialize();
 void updatefsm(int block);
 int checkfsm();
+int checkfree(int block);
 
 char fsm[MAX_BLOCK];
 int blockSize;
