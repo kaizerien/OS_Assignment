@@ -11,8 +11,6 @@ int contiguous(void){
 
 void allocation(char *data){
     char choice;
-    
-    //printf("%s\n",data);
 
     if(!strcmp(data, "add")){
         choice = add;
@@ -46,17 +44,18 @@ void allocation(char *data){
 }
 
 void savetofile(int f, char d[]){
-    for(int i = 0; i< MAX_BLOCK; i++){
-        if(checkspace(i) == TRUE){
-            node[i].filename = f;
-            strcpy(node[i].data, d);
-        return;
+    for(int i = 1; i< noOfBlocks; i++){
+        for(int j = 0; j < blockSize ; j ++)
+            if(checkspace(i, j) == TRUE){
+                blocks[i][j].filename = f;
+                strcpy(blocks[i][j].data, d);
+            return;
         }
     }
 }
 
-int checkspace(int n){
-    if (strcmp(node[n].data, "/0") && node[n].filename == 0){
+int checkspace(int n, int k){
+    if (strcmp(blocks[n][k].data, "/0") && blocks[n][k].filename == 0){
         return TRUE;
     }else{
         return FALSE;
@@ -64,12 +63,12 @@ int checkspace(int n){
 }
 
 void printallocation(){
-    for(int i = 0; i < MAX_BLOCK; i++){
-        if(node[i].filename != 0){
-            printf("Node Index: %i\n", node[i].index);
-            printf("Block No: %i\n", node[i].blockNo);
-            printf("Filename: %i\n", node[i].filename);
-            printf("Data: %s\n", node[i].data);
+    for(int i = 0; i < noOfBlocks; i++){
+        for(int j = 0; j < blockSize ; j++)
+            if(blocks[i][j].filename != 0){
+                printf("Node Index: %i\n", blocks[i][j].index);
+                printf("Filename: %i\n", blocks[i][j].filename);
+                printf("Data: %s\n", blocks[i][j].data);
         }
     }
 }

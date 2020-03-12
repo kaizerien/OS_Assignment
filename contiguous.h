@@ -10,5 +10,5 @@ void readCSV(char input[]);
 void getData(char *buffer);
 void allocation(char *token);
 void printallocation();
-int checkspace(int n);
+int checkspace(int n, int k);
 void savetofile(int f, char d[]);
