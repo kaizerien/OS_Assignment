@@ -1,5 +1,7 @@
 #include "contiguous.h"
 
+int curBlock = 0;
+
 int contiguous(void){
 
     printf("Enter name of .csv file to read from\n");
@@ -21,10 +23,9 @@ void allocation(char *data){
     }
     switch(choice){
         case add:
-            //printf("+");
             if(atoi(data) != 0 && atoi(data)%100 == 0){
-                //strcpy(file_name, data);
                 file_name = atoi(data);
+                curBlock = checkfsm();
             }else{
                 if(atoi(data)!=0){
                     savetofile(file_name, data);
@@ -32,10 +33,9 @@ void allocation(char *data){
             }
             break;
         case read:
-            //printf("=");
+
             break;
         case delete:
-            //printf("-");
             if(atoi(data) != 0 && atoi(data)%100 == 0){
                 //strcpy(file_name, data);
             }
@@ -44,18 +44,18 @@ void allocation(char *data){
 }
 
 void savetofile(int f, char d[]){
-    for(int i = 1; i< noOfBlocks; i++){
-        for(int j = 0; j < blockSize ; j ++)
-            if(checkspace(i, j) == TRUE){
-                blocks[i][j].filename = f;
-                strcpy(blocks[i][j].data, d);
+    updatefsm(curBlock);
+    for(int j = 0; j < blockSize; j++){
+        if(checkspace(curBlock, j) == TRUE){
+            nodes[curBlock][j].filename = f;
+            strcpy(nodes[curBlock][j].data, d);
             return;
         }
     }
 }
 
 int checkspace(int n, int k){
-    if (strcmp(blocks[n][k].data, "/0") && blocks[n][k].filename == 0){
+    if (strcmp(nodes[n][k].data, "/0") == 0 && nodes[n][k].filename == 0){
         return TRUE;
     }else{
         return FALSE;
@@ -64,11 +64,14 @@ int checkspace(int n, int k){
 
 void printallocation(){
     for(int i = 0; i < noOfBlocks; i++){
-        for(int j = 0; j < blockSize ; j++)
-            if(blocks[i][j].filename != 0){
-                printf("Node Index: %i\n", blocks[i][j].index);
-                printf("Filename: %i\n", blocks[i][j].filename);
-                printf("Data: %s\n", blocks[i][j].data);
+        for(int j = 0; j < blockSize; j++){
+            if(nodes[i][j].filename != 0){
+                printf("Node Index: %i\n", nodes[i][j].index);
+                printf("Block No: %i\n", nodes[i][j].blockNo);
+                printf("Filename: %i\n", nodes[i][j].filename);
+                printf("Data: %s\n", nodes[i][j].data);
+                printf("FSM: %s\n", fsm);
+            }
         }
     }
 }
@@ -95,8 +98,6 @@ void getData(char buffer[])
    while(token) 
    {
         //printf("%s\n",token);
-        //strcpy(CSV_Data[counter], token);
-       // printf(CSV_Data[counter]);
         allocation(token);
         token = strtok(NULL,", ");
 

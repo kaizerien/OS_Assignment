@@ -58,34 +58,29 @@ int main(void)
     //If the max block is not divisible by the blocksize, the no of block will be -1
     noOfBlocks = (MAX_BLOCK % blockSize) ? noOfBlocks - 1 : noOfBlocks;
 
-    initialize(noOfBlocks, blockSize);
-    extraSpace = MAX_BLOCK % blockSize;
-
-
-    
-    //printf("%i", blocks[10][9].blockNo);
-    //printf("%i", blocks[12][15].blockNo);
-    //blocks[9] = realloc(blocks[9],(blockSize + 10 * sizeof(struct node)));
-    //printf("%i", blocks[10][10].blockNo);
     //printf("Block\t\tIndex\tFile Data\n");
-    //while (counter < MAX_BLOCK)
-    //{
-    //    for (j = 0; j < blockSize; j++)
-    //    {
-            //If the no of block size is more than the block index
-            //Block index will become -1, else it will be the current counter value
-            //node[counter].blockNo = (noOfBlocks < blockIndex) ? -1 : blockIndex;
-            //node[counter].index = counter;
-            //node[counter].filename = 0;
+    initialize();
+    // while (counter < MAX_BLOCK)
+    // {
+    //     for (j = 0; j < blockSize; j++)
+    //     {
+    //         //If the no of block size is more than the block index
+    //         //Block index will become -1, else it will be the current counter value
+    //         nodes[counter].blockNo = (noOfBlocks < blockIndex) ? -1 : blockIndex;
+    //         nodes[counter].index = counter;
+    //         nodes[counter].data = -1;
+    //         nodes[counter].filename = 0;
 
-            //(counter == MAX_BLOCK)
-            //If the condition is true, j = block size
-            //Else noOfB locks < blockIndex
-    //        (counter == MAX_BLOCK) ? j = blockSize : printf("%d\t\t%d\t%s\n", node[counter].blockNo, node[counter].index, node[counter].data);
-    //        counter++;
-    //    }
-    //    blockIndex++;
-    //}
+    //         //(counter == MAX_BLOCK)
+    //         //If the condition is true, j = block size
+    //         //Else noOfBlocks < blockIndex
+    //         (counter == MAX_BLOCK) ? j = blockSize : printf("%d\t\t%d\t%d\n", node[counter].blockNo, node[counter].index, node[counter].data);
+    //         counter++;
+    //     }
+    //     blockIndex++;
+    // }
+
+
 
     //File system choice
     do
@@ -119,18 +114,20 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-void initialize(int noBlocks, int size){
-    blocks = (struct node**)malloc(noBlocks * sizeof(struct node*));
-     for(int i = 0; i<noBlocks ; i++){
-        blocks[i] = (struct node*)malloc(size * sizeof(struct node));
-    }
-
-}
-
-void assign(int noBlocks, int size){
-    for(int i = 0; i < noBlocks ; i ++){
-        for(int j = 0; j < size; j ++){
-            blocks[i][j].blockNo = i;
+void initialize(){
+    int index = 0;
+    for(int i = 0; i< noOfBlocks ; i++){
+        if(i != 0){
+            fsm[i-1] = '0';
+        }
+        for(int j = 0; j< blockSize ; j++){
+            nodes[i][j].blockNo = i;
+            strcpy(nodes[i][j].data, "/0");
+            nodes[i][j].filename = 0;
+            nodes[i][j].index = index;
+            index += 1;
+            printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
         }
     }
+    printf("%s", fsm);
 }
