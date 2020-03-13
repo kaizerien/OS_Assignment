@@ -58,28 +58,7 @@ int main(void)
     //If the max block is not divisible by the blocksize, the no of block will be -1
     noOfBlocks = (MAX_BLOCK % blockSize) ? noOfBlocks - 1 : noOfBlocks;
 
-    //printf("Block\t\tIndex\tFile Data\n");
     initialize();
-    // while (counter < MAX_BLOCK)
-    // {
-    //     for (j = 0; j < blockSize; j++)
-    //     {
-    //         //If the no of block size is more than the block index
-    //         //Block index will become -1, else it will be the current counter value
-    //         nodes[counter].blockNo = (noOfBlocks < blockIndex) ? -1 : blockIndex;
-    //         nodes[counter].index = counter;
-    //         nodes[counter].data = -1;
-    //         nodes[counter].filename = 0;
-
-    //         //(counter == MAX_BLOCK)
-    //         //If the condition is true, j = block size
-    //         //Else noOfBlocks < blockIndex
-    //         (counter == MAX_BLOCK) ? j = blockSize : printf("%d\t\t%d\t%d\n", node[counter].blockNo, node[counter].index, node[counter].data);
-    //         counter++;
-    //     }
-    //     blockIndex++;
-    // }
-
 
 
     //File system choice

@@ -30,8 +30,10 @@ void allocation(char *data){
                 if(atoi(data)!=0){
                     filesize +=1;
                     if(filesize > blockSize){
-                        curBlock = checkfsm();
-                        savetofile(file_name, data);
+                        if(checkfree(curBlock+1) == TRUE){
+                            curBlock = checkfsm();
+                            savetofile(file_name, data);
+                        }                           
                     }else{
                         savetofile(file_name, data);
                     }
@@ -86,12 +88,7 @@ void readfile(char f[]){
 }
 
 void deletefile(int f){
-    int delblock = 0;
     for(int i = 1; i < noOfBlocks; i++){
-        // if(nodes[i][1].filename == f){
-        //     delblock = i;
-        //     deleteblock(delblock, f);
-        // }
         for(int j = 0; j< blockSize; j++){
             if(nodes[i][j].filename == f){
                 nodes[i][j].filename = 0;
