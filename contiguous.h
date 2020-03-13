@@ -8,9 +8,8 @@ int filesize = 0;
 
 enum allstate{add = 1, read = 2, delete = 3}state;
 
-void readCSV(char input[]);
-void getData(char *buffer);
-void allocation(char *token);
+
+void cont_allocation(char *token, char choice);
 void printallocation();
 int checkspace(int n, int k);
 void savetofile(int f, char d[]);

@@ -1,25 +1,27 @@
-#include "contiguous.h"
+//#include "contiguous.h"
+#include "allocation.h"
 
 
-int contiguous(void){
+// int contiguous(void){
 
-    printf("Enter name of .csv file to read from\n");
-    //scanf("%s", &input);
-    readCSV("SampleCSV.csv");
+//     printf("Enter name of .csv file to read from\n");
+//     //scanf("%s", &input);
+//     readCSV("SampleCSV.csv");
 
-    printallocation();
-}
+//     printallocation();
+// }
 
-void allocation(char *data){
-    char choice;
+void cont_allocation(char *data, char choice){
+    // char choice;
 
-    if(!strcmp(data, "add")){
-        choice = add;
-    }else if(!strcmp(data, "read")){
-        choice = read;
-    }else if(!strcmp(data, "delete")){
-        choice = delete;
-    }
+    // if(!strcmp(data, "add")){
+    //     choice = add;
+    // }else if(!strcmp(data, "read")){
+    //     choice = read;
+    // }else if(!strcmp(data, "delete")){
+    //     choice = delete;
+    // }
+    
     switch(choice){
         case add:
             if(atoi(data) != 0 && atoi(data)%100 == 0){
@@ -85,62 +87,4 @@ void readfile(char f[]){
             }
         }
     }
-}
-
-void deletefile(int f){
-    for(int i = 1; i < noOfBlocks; i++){
-        for(int j = 0; j< blockSize; j++){
-            if(nodes[i][j].filename == f){
-                nodes[i][j].filename = 0;
-                strcpy(nodes[i][j].data, "\0");
-                if(checkfree(i) == FALSE){
-                    updatefsm(i);
-                }
-            }
-        }
-    }
-}
-
-void printallocation(){
-    for(int i = 0; i < noOfBlocks; i++){
-        for(int j = 0; j < blockSize; j++){
-            if(nodes[i][j].filename != 0){
-                printf("Node Index: %i\n", nodes[i][j].index);
-                printf("Block No: %i\n", nodes[i][j].blockNo);
-                printf("Filename: %i\n", nodes[i][j].filename);
-                printf("Data: %s\n", nodes[i][j].data);
-            }
-        }
-    }
-    printf("FSM: %s\n", fsm);
-}
-
-void readCSV(char input[]){
-    register int count=0;
-    FILE *fp = fopen(input,"r");
-
-    char buffer[1024];
-        while(fgets(buffer, 1024, (FILE*)fp)){
-        count++;
-        if(count != 0){
-            getData(buffer);
-        }
-    }
-
-    fclose(fp);
-}
-
-void getData(char buffer[])
-{
-   char *token = strtok(buffer,",");
-   int counter=0;
-   while(token) 
-   {
-        //printf("%s\n",token);
-        allocation(token);
-        token = strtok(NULL,", ");
-
-
-        counter++; 
-   }	  
 }

@@ -2,53 +2,6 @@
 
 int action = 0, dir_counter = 0, block_index = 0, current_dir_num = 0, block_num;
 
-int randomIndex();
-int check_new_block();
-int allocate_block(char *token);
-
-int linked_allocation(char *token, int num)
-{
-    int _token = atoi(token);
-    if (num == 0)
-    {
-        if (strcmp(token, "add") == 0)
-        {
-            action = 1;
-        }
-        else if (strcmp(token, "read") == 0)
-        {
-            action = 2;
-        }
-        else if (strcmp(token, "delete") == 0)
-        {
-            action = 3;
-        }
-        else
-        {
-            printf("Invalid command");
-        }
-        return 0;
-    }
-    else if (num == 1 && action == 1)
-    {
-        //vcb[0].start = check_new_block();
-        current_file_number = atoi(token);
-    }
-    else if (action != 0)
-    {
-        if (token != "\n")
-        {
-            allocate_block(token);
-        }
-        else
-        {
-            /* code */
-        }
-        
-    }
-
-}
-
 int randomBlock()
 {
     int _randomBlock = rand() % noOfBlocks;
@@ -78,7 +31,7 @@ int check_new_block()
     return ((current_space + blockSize) != 0) ? check_new_block() : block_num;
 }
 
-int allocate_block(char *token)
+int link_allocation(char *token, int choice)
 {
     //printf("test %s", token);
     //int token_value = atoi(token);

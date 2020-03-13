@@ -17,6 +17,7 @@ struct node
     int blockNo;
     char data[MAX_STRING_SIZE]; 
     int filename;
+    int reserved;
 }nodes[MAX_BLOCK][MAX_BLOCK];
 
 void initialize();
@@ -24,11 +25,16 @@ void updatefsm(int block);
 int checkfsm();
 int checkfree(int block);
 
+//Reading CSVFile
+void readCSV(char input[]);
+void getData(char *buffer);
+
 char fsm[MAX_BLOCK];
 int blockSize;
 int noOfBlocks;
 int current_file_number;
 int extraSpace;
+int choice_allocation;
 
 
 void updatefsm(int block){
