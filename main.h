@@ -28,27 +28,27 @@ char fsm[MAX_BLOCK];
 int blockSize;
 int noOfBlocks;
 int current_file_number;
-int extraSpace;
+int superblockSize;
 
 
 void updatefsm(int block){
-    if(fsm[block - 1] == '0'){
-        fsm[block - 1] = '1';
-    }else{
+    if(fsm[block - 1] == '1'){
         fsm[block - 1] = '0';
+    }else{
+        fsm[block - 1] = '1';
     }
 }
 
 int checkfsm(){
     for(int i  = 0; i < noOfBlocks-1; i++){
-        if(fsm[i] == '0'){
+        if(fsm[i] == '1'){
             return i + 1;
         }
     }
 }
 
 int checkfree(int block){
-    if (fsm[block-1] == '0'){
+    if (fsm[block-1] == '1'){
         return TRUE;
     }else{
         return FALSE;

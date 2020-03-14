@@ -55,11 +55,9 @@ int main(void)
     } while (blockSize < 0 || blockSize > 130);
 
     noOfBlocks = MAX_BLOCK / blockSize;
-    //If the max block is not divisible by the blocksize, the no of block will be -1
-    noOfBlocks = (MAX_BLOCK % blockSize) ? noOfBlocks - 1 : noOfBlocks;
+    superblockSize = blockSize + (MAX_BLOCK % blockSize);
 
     initialize();
-
 
     //File system choice
     do
@@ -97,16 +95,28 @@ void initialize(){
     int index = 0;
     for(int i = 0; i< noOfBlocks ; i++){
         if(i != 0){
-            fsm[i-1] = '0';
+            fsm[i-1] = '1';
         }
-        for(int j = 0; j< blockSize ; j++){
-            nodes[i][j].blockNo = i;
-            strcpy(nodes[i][j].data, "\0");
-            nodes[i][j].filename = 0;
-            nodes[i][j].index = index;
-            index += 1;
-            printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
+        if(i == 0){
+            for(int k = 0; k < superblockSize; k++){
+                nodes[i][k].blockNo = i;
+                strcpy(nodes[i][k].data, "\0");
+                nodes[i][k].filename = 0;
+                nodes[i][k].index = index;
+                index += 1;
+                printf("%d\t%d\t%d\t%s\n", nodes[i][k].index,nodes[i][k].blockNo, nodes[i][k].filename,nodes[i][k].data);
+            }
+        }else{
+            for(int j = 0; j< blockSize ; j++){
+                nodes[i][j].blockNo = i;
+                strcpy(nodes[i][j].data, "\0");
+                nodes[i][j].filename = 0;
+                nodes[i][j].index = index;
+                index += 1;
+                printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
+            }
         }
+        
     }
     printf("%s", fsm);
 }
