@@ -13,6 +13,7 @@ int contiguous(void){
 void allocation(char *data){
     int file_name;
     char choice;
+    //int filelength = 0;
 
     if(!strcmp(data, "add")){
         choice = add;
@@ -29,6 +30,7 @@ void allocation(char *data){
                 filesize = 0;
                 filelength = 1;
                 updateDirectory(curBlock, file_name, add);
+
             }else{
                 if(atoi(data)!=0){
                     filesize +=1;
@@ -39,6 +41,8 @@ void allocation(char *data){
                             filelength +=1;
                             savetofile(file_name, data);
                             updateDirectory(((curBlock + 1)-filelength), file_name, overwrite);
+                        }else{
+                            
                         }                           
                     }else{
                         savetofile(file_name, data);
@@ -81,11 +85,10 @@ int checkspace(int n, int k){
     }
 }
 
-void updateDirectory(int blockNum, int filename, int state){
+void updateDirectory(int blockNum, int filename,int state){
     int done = FALSE;
     char temp[10];
     char* readtoken;
-    int length = 0;
     for (int i = 0; i<superblockSize; i++){
         switch(state){
             case add:
@@ -112,8 +115,8 @@ void updateDirectory(int blockNum, int filename, int state){
                         readtoken = strtok(NULL, ", ");
                         blockNum = atoi(readtoken);
                         readtoken = strtok(NULL, " ");
-                        length = atoi(readtoken);
-                        printreadfile(blockNum, length);
+                        filelength = atoi(readtoken);
+                        printreadfile(blockNum, filelength);
                     }
                 }              
                 break;
@@ -133,7 +136,7 @@ void updateDirectory(int blockNum, int filename, int state){
                     readtoken = strtok(temp, ", ");
                     if(atoi(readtoken) == filename){
                         strcpy(nodes[0][i].data, "\0");
-                        if (done == FALSE){            
+                        //if (done == FALSE){            
                             strcpy(nodes[0][i].data, itoa(filename, temp, 10));        
                             strcat(nodes[0][i].data, ", ");
                             strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
@@ -141,7 +144,7 @@ void updateDirectory(int blockNum, int filename, int state){
                             strcat(nodes[0][i].data, itoa(filelength, temp, 10));
                             done = TRUE;
                             return;
-                        }
+                        //}
                     }
                 }
                 break;
@@ -154,7 +157,7 @@ void findreadfile(char f[]){
     for(int i = 1; i< noOfBlocks; i++){
         for(int j= 0; i< blockSize; j++){
             if(!strcmp(nodes[i][j].data, f)){
-                updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read);
+                updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename,read);
                 //readfilename = nodes[i][j].filename;
                 //printf("Block No: %i\n", (nodes[i][j].blockNo));
                 //printf("Filename: %i\n", (nodes[i][j].filename));
