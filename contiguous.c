@@ -168,7 +168,7 @@ void findreadfile(char f[]){
 }
 
 void printreadfile(int blockNo, int length){
-
+    printf("%i\n%i\n", blockNo, length);
 }
 
 void deletefile(int f){
@@ -187,15 +187,16 @@ void deletefile(int f){
 
 void printallocation(){
     for(int i = 0; i < noOfBlocks; i++){
-        for(int j = 0; j < blockSize; j++){
-            //if(nodes[i][j].filename != 0){
+        if(i == 0){
+            for(int k = 0; k < superblockSize; k++){
+                printf("%d\t%d\t%d\t%s\n", nodes[i][k].index,nodes[i][k].blockNo, nodes[i][k].filename,nodes[i][k].data);
+            }
+        }else{
+            for(int j = 0; j < blockSize; j++){
                 printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
-                //printf("Node Index: %i\n", nodes[i][j].index);
-                //printf("Block No: %i\n", nodes[i][j].blockNo);
-                //printf("Filename: %i\n", nodes[i][j].filename);
-                //printf("Data: %s\n", nodes[i][j].data);
-            //}
+            }
         }
+        
     }
     printf("FSM: %s\n", fsm);
 }
