@@ -17,6 +17,7 @@ struct node
     int blockNo;
     char data[MAX_STRING_SIZE]; 
     int filename;
+    int reserved;
 }nodes[MAX_BLOCK][MAX_BLOCK];
 
 void initialize();
@@ -28,6 +29,7 @@ char fsm[MAX_BLOCK];
 int blockSize;
 int noOfBlocks;
 int current_file_number;
+int extraSpace;
 int superblockSize;
 
 
