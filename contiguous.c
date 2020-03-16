@@ -13,7 +13,6 @@ int contiguous(void){
 void allocation(char *data){
     int file_name;
     char choice;
-    //int filelength = 0;
 
     if(!strcmp(data, "add")){
         choice = add;
@@ -41,9 +40,7 @@ void allocation(char *data){
                             filelength +=1;
                             savetofile(file_name, data);
                             updateDirectory(((curBlock + 1)-filelength), file_name, overwrite);
-                        }else{
-                            
-                        }                           
+                        }                       
                     }else{
                         savetofile(file_name, data);
                     }
@@ -162,13 +159,16 @@ void findreadfile(char f[]){
                 //printf("Block No: %i\n", (nodes[i][j].blockNo));
                 //printf("Filename: %i\n", (nodes[i][j].filename));
                 return;
+            }else{
+                printf("%snot found on disk\n", f);
+                return;
             }
         }
     }
 }
 
 void printreadfile(int blockNo, int length){
-    printf("%i\n%i\n", blockNo, length);
+    printf("%i, %i\n", blockNo, length);
 }
 
 void deletefile(int f){
@@ -223,6 +223,7 @@ void getData(char buffer[])
    while(token) 
    {
         allocation(token);
+        //printf("%s\n", token);
         token = strtok(NULL,",");
 
 

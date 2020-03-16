@@ -5,7 +5,6 @@ unsigned char input[MAX_STRING_SIZE];
 //int file_name;
 int curBlock = 0;
 int filesize = 0;
-int readfilename = 0;
 int filelength = 0;
 
 enum allstate{add = 1, read = 2, delete = 3,edit = 4,overwrite = 5}state;
