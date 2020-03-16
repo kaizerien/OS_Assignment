@@ -5,7 +5,7 @@ int contiguous(void){
 
     printf("Enter name of .csv file to read from\n");
     //scanf("%s", &input);
-    readCSV("SampleCSV.csv");
+    readCSV("TestCSV.csv");
 
     printallocation();
 }
@@ -223,7 +223,7 @@ void getData(char buffer[])
    while(token) 
    {
         allocation(token);
-        token = strtok(NULL,", ");
+        token = strtok(NULL,",");
 
 
         counter++; 
