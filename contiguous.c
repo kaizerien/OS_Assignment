@@ -15,7 +15,6 @@ int contiguous(void){
 
 void contiguousAllocation(char *data){
     int file_name;
-    char choice;
 
     if(!strcmp(data, "add")){
         choice = add;
@@ -112,17 +111,17 @@ void updateDirectory(int blockNum, int filename,int state){
     int done = FALSE;
     char temp[10];
     char* readtoken;
-    for (int i = 0; i<superblockSize; i++){
+    for (int i = 1; i<superblockSize; i++){
         switch(state){
             case add:
                 if (done == FALSE){
                     //If found the next empty node in directory structure, fill in the data.
-                    if (!strcmp(nodes[0][i + 1].data,"\0")){
-                        strcpy(nodes[0][i + 1].data, itoa(filename, temp, 10));
-                        strcat(nodes[0][i + 1].data, ", ");
-                        strcat(nodes[0][i + 1].data, itoa(blockNum, temp, 10));
-                        strcat(nodes[0][i + 1].data, ", ");
-                        strcat(nodes[0][i + 1].data, itoa(filelength, temp, 10));
+                    if (!strcmp(nodes[0][i].data,"\0")){
+                        strcpy(nodes[0][i].data, itoa(filename, temp, 10));
+                        strcat(nodes[0][i].data, ", ");
+                        strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
+                        strcat(nodes[0][i].data, ", ");
+                        strcat(nodes[0][i].data, itoa(filelength, temp, 10));
                         done = TRUE;
                         return;
                     }
@@ -161,13 +160,13 @@ void updateDirectory(int blockNum, int filename,int state){
                     readtoken = strtok(temp, ", ");
                     if(atoi(readtoken) == filename){
                         strcpy(nodes[0][i].data, "\0");         
-                            strcpy(nodes[0][i].data, itoa(filename, temp, 10));        
-                            strcat(nodes[0][i].data, ", ");
-                            strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
-                            strcat(nodes[0][i].data, ", ");
-                            strcat(nodes[0][i].data, itoa(filelength, temp, 10));
-                            done = TRUE;
-                            return;
+                        strcpy(nodes[0][i].data, itoa(filename, temp, 10));        
+                        strcat(nodes[0][i].data, ", ");
+                        strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
+                        strcat(nodes[0][i].data, ", ");
+                        strcat(nodes[0][i].data, itoa(filelength, temp, 10));
+                        done = TRUE;
+                        return;
                     }
                 }
                 break;
@@ -275,9 +274,9 @@ void readCSV(char input[]){
 
     char buffer[1024];
         while(fgets(buffer, 1024, (FILE*)fp)){
-        count++;
-        if(count != 0){
-            getData(buffer);
+            count++;
+            if(count != 0){
+                getData(buffer);
         }
     }
 
@@ -288,13 +287,16 @@ void readCSV(char input[]){
 void getData(char buffer[])
 {
    char *token = strtok(buffer,", ");
-   int counter=0;
+   char copy[1000][1000];
+   int counter = 0;
    while(token) 
    {
-        contiguousAllocation(token);
+        strcpy(copy[counter], token);
+        //contiguousAllocation(token);
         token = strtok(NULL,", ");
-
-
-        counter++; 
-   }	  
+        counter++;
+   }	 
+   for(int i = 0; i < counter; i++){
+       contiguousAllocation(copy[i]);
+    } 
 }

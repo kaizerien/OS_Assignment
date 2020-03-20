@@ -4,6 +4,7 @@ unsigned char input[MAX_STRING_SIZE];
 int curBlock = 0;
 int filesize = 0;
 int filelength = 0;
+char choice;
 
 void readCSV(char input[]);
 void getData(char *buffer);
