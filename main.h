@@ -33,6 +33,7 @@ int extraSpace;
 int superblockSize;
 
 
+//Func to update fsm after block is used(0) or freed(1)
 void updatefsm(int block){
     if(fsm[block - 1] == '1'){
         fsm[block - 1] = '0';
@@ -41,14 +42,25 @@ void updatefsm(int block){
     }
 }
 
+//Func to return free block
 int checkfsm(){
+    int space = FALSE;
+    int block = 0;
     for(int i  = 0; i < noOfBlocks-1; i++){
         if(fsm[i] == '1'){
-            return i + 1;
+            block =  i + 1; //Plus 1 bcause fsm does not include superblock
+            space = TRUE;
+            break;
         }
+    }
+    if(space == TRUE){
+        return block; //Return free block number if found free block
+    }else{
+        return -1; //Return -1 if no free block found
     }
 }
 
+//Func to check if certain block is free
 int checkfree(int block){
     if (fsm[block-1] == '1'){
         return TRUE;

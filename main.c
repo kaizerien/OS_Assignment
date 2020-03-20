@@ -55,7 +55,7 @@ int main(void)
     } while (blockSize < 0 || blockSize > 130);
 
     noOfBlocks = MAX_BLOCK / blockSize;
-    superblockSize = blockSize + (MAX_BLOCK % blockSize);
+    superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
     initialize();
 
@@ -67,7 +67,7 @@ int main(void)
         choice = atoi(input);
         if (choice == 1)
         {
-            //Space for Contiguous
+            //Enter Contiguous Allocation
             contiguous();
         }
         else if (choice == 2)
@@ -91,14 +91,16 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
+//Func to initialze blocks
 void initialize(){
     int index = 0;
     for(int i = 0; i< noOfBlocks ; i++){
+        //Initialize FSM string to 1
         if(i != 0){
-            fsm[i-1] = '1';
+            fsm[i-1] = '1'; //i-1 because FSM do not include superblock
         }
         if(i == 0){
-            for(int k = 0; k < superblockSize; k++){
+            for(int k = 0; k < superblockSize; k++){ //For block 0 aka superblock
                 nodes[i][k].blockNo = i;
                 strcpy(nodes[i][k].data, "\0");
                 nodes[i][k].filename = 0;
@@ -107,7 +109,7 @@ void initialize(){
                 printf("%d\t%d\t%d\t%s\n", nodes[i][k].index,nodes[i][k].blockNo, nodes[i][k].filename,nodes[i][k].data);
             }
         }else{
-            for(int j = 0; j< blockSize ; j++){
+            for(int j = 0; j< blockSize ; j++){ //For rest of the block
                 nodes[i][j].blockNo = i;
                 strcpy(nodes[i][j].data, "\0");
                 nodes[i][j].filename = 0;
