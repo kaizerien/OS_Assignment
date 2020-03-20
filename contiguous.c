@@ -1,4 +1,5 @@
 #include "contiguous.h"
+#include "vcb.c"
 
 
 int contiguous(void){
@@ -62,18 +63,24 @@ void contiguousAllocation(char *data){
                     
                 }
             }
+            vcbfunc(nodes);
+            strcpy(nodes[0][0].data, vcbString);
             break;
         case read:
             if(atoi(data) != 0){
                 //Find if file exist
                 findreadfile(data);
             }
+            vcbfunc(nodes);
+            strcpy(nodes[0][0].data, vcbString);
             break;
         case delete:
             if(atoi(data) != 0 && atoi(data)%100 == 0){
                 //Find if file exist
                 finddeletefile(atoi(data));
             }
+            vcbfunc(nodes);
+            strcpy(nodes[0][0].data, vcbString);
             break;
     }
 }

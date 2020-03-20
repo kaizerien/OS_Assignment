@@ -1,7 +1,7 @@
+#ifndef VCB_C
+#define VCB_C
+
 #include "main.h"
-#include <stdbool.h>
-#include <ctype.h>
-void getBlocks();
 
 
 void vcbfunc(struct node nodes[MAX_BLOCK][MAX_BLOCK])
@@ -35,13 +35,4 @@ void vcbfunc(struct node nodes[MAX_BLOCK][MAX_BLOCK])
     vcbString[count + 1] = '\0';
 }
 
-// int main()
-// {
-//     printf("Running");
-//     vcbfunc(nodes);
-//     printf(vcbString);
-//     // for(int i=0;i<MAX_BLOCK;++i){
-//     //     printf("%d",node[i].index);
-//     // }
-//     // printf("%s", vcbString);
-// }
+#endif

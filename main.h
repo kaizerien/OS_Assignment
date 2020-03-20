@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <String.h>
+#include <stdbool.h>
 #include <ctype.h>
 
 #define MAX_STRING_SIZE 100
