@@ -31,7 +31,6 @@ int linked_allocation(char *token, int num)
     }
     else if (num == 1 && action == 1)
     {
-        //vcb[0].start = check_new_block();
         current_file_number = atoi(token);
     }
     else if (action != 0)
