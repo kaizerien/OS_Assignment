@@ -1,12 +1,12 @@
 #include "indexed.h"
 
-int contiguous(void){
+int indexed(void){
 
     printf("Enter name of .csv file to read from\n");
     //scanf("%s", &input);
     readCSV("SampleCSV.csv");
 
-    printallocation();
+    printallocationIndex();
 }
 
 void allocation(char *data){
@@ -338,7 +338,7 @@ int randomBlock()
     return _randomBlock;
 }
 
-void printallocation(){
+void printallocationIndex(){
     for(int i = 0; i < noOfBlocks; i++){
         if (i ==0){
         for(int k = 0; k < superblockSize; k++){
