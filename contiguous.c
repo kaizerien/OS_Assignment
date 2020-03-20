@@ -4,15 +4,15 @@
 int contiguous(void){
 
     printf("Enter name of .csv file to read from\n");
-    //scanf("%s", &input);
+    scanf("%s", &input);
     //Enter .CSV file to run
-    readCSV("SampleCSV.csv");
+    readCSV(input);
 
     //Print everything at end of program
     printallocation();
 }
 
-void allocation(char *data){
+void contiguousAllocation(char *data){
     int file_name;
     char choice;
 
@@ -284,7 +284,7 @@ void getData(char buffer[])
    int counter=0;
    while(token) 
    {
-        allocation(token);
+        contiguousAllocation(token);
         token = strtok(NULL,", ");
 
 

@@ -25,6 +25,9 @@ void updatefsm(int block);
 int checkfsm();
 int checkfree(int block);
 
+//Enum for easier/clearer switch cases
+enum allstate{add = 1, read = 2, delete = 3,edit = 4,overwrite = 5}state;
+
 char fsm[MAX_BLOCK];
 int blockSize;
 int noOfBlocks;

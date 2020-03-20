@@ -1,7 +1,7 @@
 #include "indexed.h"
 #include "vcb.c"
 
-int index_indexed(void)
+int indexed(void)
 {
 
     printf("Enter name of .csv file to read from\n");

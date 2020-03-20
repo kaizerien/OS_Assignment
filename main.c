@@ -9,6 +9,7 @@ Description:
 
 #include "main.h"
 #include "contiguous.c"
+#include "indexed.c"
 
 int main(void)
 {
@@ -77,8 +78,7 @@ int main(void)
         }
         else if (choice == 3)
         {
-            //indexed();
-
+            indexed();
         }
         else if (choice == 4)
         {
