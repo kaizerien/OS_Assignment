@@ -32,6 +32,11 @@ int current_file_number;
 int extraSpace;
 int superblockSize;
 
+char vcbStringPrint[MAX_BLOCK][MAX_BLOCK];
+char vcbString[MAX_BLOCK];
+void updatefsm(int block);
+void vcbfunc(struct node nodes[MAX_BLOCK][MAX_BLOCK]);
+
 
 //Func to update fsm after block is used(0) or freed(1)
 void updatefsm(int block){
@@ -68,5 +73,6 @@ int checkfree(int block){
         return FALSE;
     }
 }
+
 
 #endif
