@@ -9,6 +9,9 @@
 void linked_readCSV(char input[]);
 void linked_getData(char *buffer);
 
+//Code to access directory
+
+
 // void linkedAllocation(char *token);
 
 // void linked_savetofile(int f, char d[]);

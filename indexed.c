@@ -5,15 +5,14 @@ int indexed(void)
 {
 
     printf("Enter name of .csv file to read from\n");
-    scanf("%s", &input);
-    index_readCSV(input);
+    // scanf("%s", &input);
+    index_readCSV("SampleCSV.csv");
 
     index_printallocation();
 }
 
 void index_allocation(char *data)
 {
-    char choice;
     int blockNum;
     int first;
     if (!strcmp(data, "add"))

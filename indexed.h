@@ -11,6 +11,7 @@ int directEntry = 0;
 int timer;
 int readDone = 0;
 char dataString[100];
+char choice;
 
 void index_readCSV(char input[]);
 void index_getData(char *buffer);

@@ -49,7 +49,7 @@ void linkedAllocation(char *data)
             filesize = 0;
             filelength = 1;
             //Add file to directory
-            updateDirectory(curBlock, file_name, add);
+            linked_updateDirectory(curBlock, file_name, add,0);
         }
         else
         {
@@ -79,7 +79,7 @@ void linkedAllocation(char *data)
                         filelength += 1;
                         savetofile(file_name, data);
                         //Overwrite old directory entry to update length
-                        updateDirectory(((curBlock + 1) - filelength), file_name, overwrite);
+                        linked_updateDirectory(((curBlock + 1) - filelength), file_name, overwrite, curBlock);
                     }
                     else
                     {
@@ -119,24 +119,6 @@ void linkedAllocation(char *data)
     }
 }
 
-void linked_savetofile(int f, char d[])
-{
-    if (checkfree(curBlock) == TRUE)
-    {
-        updatefsm(curBlock);
-    }
-    //Reserve a space to input the pointer
-    for (int i = 0; i < blockSize; i++)
-    {
-        if (checkspace(curBlock, i) == TRUE)
-        {
-            nodes[curBlock][i].filename = f;
-            strcpy(nodes[curBlock][i].data, d);
-            printf("%d\t%d\t%d\t%s\n", nodes[curBlock][i].index, nodes[curBlock][i].blockNo, nodes[curBlock][i].filename, nodes[curBlock][i].data);
-            return;
-        }
-    }
-}
 
 void linked_readCSV(char input[])
 {
