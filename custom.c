@@ -78,7 +78,7 @@ void customAllocation(char *data)
 
                         custom_directory_struct(curBlock, temp_file_name, add);
                         printf("Adding file %i and found free block %i\n", file_name, curBlock);
-                        filesize = 0;
+                        filesize = 1;
                         filelength += 1;
                         savetofile(file_name, data);
                         //Overwrite old directory entry to update length
