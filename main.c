@@ -10,6 +10,7 @@ Description:
 #include "main.h"
 #include "contiguous.c"
 #include "indexed.c"
+#include "linked.c"
 
 int main(void)
 {
@@ -59,6 +60,7 @@ int main(void)
     superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
     initialize();
+   // linked();
 
     //File system choice
     do
@@ -75,6 +77,7 @@ int main(void)
         {
 
             //Space for Linked
+            linked();
         }
         else if (choice == 3)
         {
