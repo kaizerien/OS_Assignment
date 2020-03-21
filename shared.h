@@ -116,7 +116,6 @@ void updateDirectory(int blockNum, int filename, int state)
             if (strcmp(nodes[0][i].data, "\0"))
             {
                 strcpy(temp, nodes[0][i].data);
-                printf("test %s", nodes[0][i].data);
                 readtoken = strtok(temp, ", ");
                 if (atoi(readtoken) == filename)
                 {

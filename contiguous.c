@@ -56,7 +56,7 @@ void contiguousAllocation(char *data){
                             updateDirectory(((curBlock + 1)-filelength), file_name, overwrite);
                         }else{
                             printf("Disk not enough space for file!");
-                            finddeletefile(atoi(file_name));
+                            finddeletefile(file_name);
                         }                      
                     }else{
                         //Save data to block

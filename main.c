@@ -49,51 +49,49 @@ int main(void)
 
     } while (format != 1);
 
-    // do
-    // {
-    //     printf("\nEnter required block size: ");
-    //     scanf("%s", &input);
-    //     //Convert the input to become a int
-    //     blockSize = atoi(input);
-    // } while (blockSize < 0 || blockSize > 130);
-    blockSize = 3;
+    //User input for block size
+    do
+    {
+        printf("\nEnter required block size: ");
+        scanf("%s", &input);
+        //Convert the input to become a int
+        blockSize = atoi(input);
+    } while (blockSize < 0 || blockSize > 130);
 
     noOfBlocks = MAX_BLOCK / blockSize;
     superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
     initialize();
-    //linked();
-    custom();
-    //contiguous();
 
-    // //File system choice
-    // do
-    // {
-    //     printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
-    //     scanf("%s", &input);
-    //     choice = atoi(input);
-    //     if (choice == 1)
-    //     {
-    //         //Enter Contiguous Allocation
-    //         contiguous();
-    //     }
-    //     else if (choice == 2)
-    //     {
-
-    //         //Space for Linked
-    //         linked();
-    //     }
-    //     else if (choice == 3)
-    //     {
-    //         indexed();
-    //     }
-    //     else if (choice == 4)
-    //     {
-    //         //Space for custom
-    //     }
-    //     else
-    //         printf("Invalid choice, please enter between 1 - 4");
-    // } while (choice <= 0 || choice > 4);
+    //File system choice
+    do
+    {
+        printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
+        scanf("%s", &input);
+        choice = atoi(input);
+        if (choice == 1)
+        {
+            //Enter Contiguous Allocation Method
+            contiguous();
+        }
+        else if (choice == 2)
+        {
+            //Enter Linked Allocation Method
+            linked();
+        }
+        else if (choice == 3)
+        {
+            //Enter Indexed Allocation Method
+            indexed();
+        }
+        else if (choice == 4)
+        {
+            //Enter Custom Allocation Method
+            custom();
+        }
+        else
+            printf("Invalid choice, please enter between 1 - 4");
+    } while (choice <= 0 || choice > 4);
 
     return EXIT_SUCCESS;
 }
