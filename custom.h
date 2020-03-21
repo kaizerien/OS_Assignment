@@ -55,6 +55,7 @@ void custom_directory_struct(int blockNum, int file_name, int state)
     {
         reserved_block_length = 0;
         reserved_block = custom_findNewBlock();
+        updatefsm(reserved_block);
 
         nodes[previousBlock][blockSize - 1].filename = file_name;
         sprintf(char_blockNo, "%d", reserved_block);

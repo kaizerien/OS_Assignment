@@ -44,6 +44,7 @@ void customAllocation(char *data)
                 //Reserverd Block For Indexing
                 reserved_block = custom_findNewBlock();
                 start_block = reserved_block;
+                updatefsm(reserved_block);
 
                 curBlock = checkfsm();
                 temp_file_name = file_name;
