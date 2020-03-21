@@ -31,15 +31,18 @@ void contiguousAllocation(char *data){
                 if(checkfsm()!= -1){
                     curBlock = checkfsm();
                     printf("Adding file %i and found free block %i\n", file_name, curBlock);
+                    filesize = 0;
+                    filelength = 1;
+                    //Add file to directory
+                    updateDirectory(curBlock, file_name, add);
+                    diskspace = TRUE;
                 }else{
                     printf("Not enough space on disk");
+                    diskspace = FALSE;
                 }
-                filesize = 0;
-                filelength = 1;
-                //Add file to directory
-                updateDirectory(curBlock, file_name, add);
+
             }else{
-                if(atoi(data)!=0){
+                if(atoi(data)!=0 && diskspace == TRUE){
                     filesize +=1;
                     //If filesize too big for one block
                     if(filesize > blockSize){
@@ -52,8 +55,8 @@ void contiguousAllocation(char *data){
                             //Overwrite old directory entry to update length
                             updateDirectory(((curBlock + 1)-filelength), file_name, overwrite);
                         }else{
-                            //Incomplete code, supposed to find blocks which can fit
                             printf("Disk not enough space for file!");
+                            finddeletefile(atoi(file_name));
                         }                      
                     }else{
                         //Save data to block

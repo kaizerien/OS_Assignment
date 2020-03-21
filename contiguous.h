@@ -1,5 +1,6 @@
 #include "main.h"
 
+int diskspace = TRUE;
 
 void readCSV(char input[]);
 void getData(char *buffer);
