@@ -1,13 +1,12 @@
 #include "indexed.h"
 #include "vcb.c"
-#include "shared.h"
 
 int indexed(void)
 {
 
     printf("Enter name of .csv file to read from\n");
     // scanf("%s", &input);
-    index_readCSV("SampleCSV.csv");
+    index_readCSV("Test2.csv");
     index_printallocation();
 
 }
@@ -18,8 +17,14 @@ void index_allocation(char *data)
     int first;
     if (!strcmp(data, "add"))
     {
-        blockNum = index_findNewBlock(); //Once add is read, find a block Num for allocation.
-        choice = add;
+        if(checkfsm()!= -1){
+            blockNum = index_findNewBlock(); //Once add is read, find a block Num for allocation.
+            choice = add;
+        }
+        else if(checkfsm() == -1){
+            printf("\nNo more new blocks \n");
+            return;
+        }
     }
     else if (!strcmp(data, "read"))
     {
@@ -48,25 +53,24 @@ void index_allocation(char *data)
                     printf("Adding file%i and found free B%i \n", file_name, blockNum);
                     indexDiskSpace = TRUE;
                 }
-                else if(directEntry>superblockSize-1){
+                else if(directEntry==superblockSize){
                     printf("\nNot enough space in Directory Structure, adding file%i failed. \n", file_name);
-                    directEntry--;
+                    directEntry= superblockSize;
                     indexDiskSpace = FALSE;
                     break;
                 }
             }
             else{
-                printf("No more available blocks!");
+                printf("No more available blocks for File %d \n", atoi(data));
                 indexDiskSpace = FALSE;
                 break;
             }
         
         }
-
         //If it is not a file num, it is data e.g. 101, 102,103.
         else
         {
-            if (atoi(data) != 0 && indexDiskSpace == TRUE)
+            if (atoi(data) != 0 && indexDiskSpace == TRUE && checkfsm()!= -1)
             {
                 filesize += 1;  //Counter + 1 each time to count size.
                 filenodes += 1; // +1 for each iteration of file data to count size
@@ -102,12 +106,12 @@ void index_allocation(char *data)
                         index_updateDirectory(0, file_name, delete);
                         if (success == 0)
                         {
-                            printf("Deletion of File %i and its index block failed \n", file_name);
+                            printf("\nDeletion of File %i and its index block failed \n", file_name);
                         }
                         else if (success == 1)
                         {
                             deleted = 1;
-                            printf("Deletion of File %i and its index block succeeded \n", file_name);
+                            printf("\nDeletion of File %i and its index block succeeded \n", file_name);
                             // index_printvcb();
                         }
                     }
@@ -125,23 +129,22 @@ void index_allocation(char *data)
         }
         if (atoi(data) != 0 && atoi(data) % 100 == 0 && readDone == 0)
         { //If read is given a file name straight away, it'll go to index_updateDirectory to output the blocks containing the file.
-
             printf("\nReading file%i: \n", atoi(data));
             index_updateDirectory(0, atoi(data), read);
-            readDone = 1;
+            if (readDone == 0){
+                printf("File does not exist! \n");
+            }
             return;
         }
         else if (atoi(data) != 0 && (atoi(data) % 100 != 0) && readDone == 0)
         { // If its a number thats not divisble by 100, like 105, 203
             index_findreadfile(data);
+            // if (readDone == 0){
+            //     printf("File does not exist! \n");
+            // }
             return;
         }
-
-        if (atoi(data) == 0 && readDone == 0)
-        {
-            printf("There's no file entered! \n");
-        }
-    
+        break;
 
     case delete:
         first = 0;
@@ -167,6 +170,7 @@ void index_allocation(char *data)
         }
         else if (atoi(data) % 100 != 0 && first == 0)
         {
+            printf("data  is %d\n", atoi(data));
             printf("Please enter a correct file name. \n");
         }
         break;
@@ -202,7 +206,7 @@ void index_findreadfile(char f[])
     }
     if (fileValid == 0)
     {
-        printf("\nFile content not linked to file! \n");
+        printf("\nFile content %s not linked to any file! \n", f);
     }
 }
 
@@ -211,8 +215,8 @@ void index_findreadfile(char f[])
 // }
 
 void index_updateDirectory(int blockNum, int file_name, int choice)
-{
-    if (directEntry < superblockSize)
+{   
+    if (directEntry < superblockSize+1)
     {
         // printf("Inside update Directory\n");
         int done = 0;
@@ -241,6 +245,7 @@ void index_updateDirectory(int blockNum, int file_name, int choice)
                     readtoken = strtok(temp, ", "); //Split up by comma
                     blockNum = atoi(readtoken);     //Read entry, compare if blockNum is = to entered data
                     // printf("%s \n", readtoken);
+
                     if (atoi(readtoken) == file_name)
                      {
                         readtoken = strtok(NULL, " ");
@@ -255,10 +260,6 @@ void index_updateDirectory(int blockNum, int file_name, int choice)
                             }
                         }
                         printf("Time: %i\n\n", timer); //Print timer counter for traversal of array
-                    }
-                    else if (readDone == 0)
-                    {
-                        printf("File does not exist! index_updateDirectory \n");
                     }
                 }
             }
@@ -399,7 +400,7 @@ void index_deletefile(int f)
     int delblock = 0;
     for (int i = 1; i < noOfBlocks; i++)
     {
-        if (nodes[i][1].filename == f)
+        if (nodes[i][0].filename == f)
         {                                   //Loop through all the block names and if it is the same as the selected block to delete.
             delblock = i;                   //select the block to delete as the found i.
             index_deleteblock(delblock, f); //Parse into deleteblock
@@ -417,8 +418,9 @@ void index_deleteblock(int block, int f)
             strcpy(nodes[block][j].data, "\0"); //Set data as reserved
         }
     }
-    printf("Block %i is freed. \n", block);
     updatefsm(block);
+    printf("Block %i is freed. \n", block);
+
     // index_updateDirectory(block, file_name, 1);
 }
 

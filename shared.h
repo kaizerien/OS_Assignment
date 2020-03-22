@@ -26,8 +26,8 @@ int filenodes;
 int deleted = 0;
 int directEntry = 0;
 int timer;
-int index_directEntry = 1;
 int readDone = 0;
+int index_directEntry = 1;
 
 int starting_index = 0;
 char dataString[100];

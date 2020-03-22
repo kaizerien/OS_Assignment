@@ -64,37 +64,38 @@ int main(void)
 
     initialize();
 
-    linked();
     //File system choice
-    // do
-    // {
-    //     printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
-    //     scanf("%s", &input);
-    //     choice = atoi(input);
-    //     if (choice == 1)
-    //     {
-    //         //Enter Contiguous Allocation
-    //         contiguous();
-    //     }
-    //     else if (choice == 2)
-    //     {
+    do
+    {
+        printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Binary Search Tree Allocation (New Method)\n5: Custom Allocation (New Method)\n");
+        scanf("%s", &input);
+        choice = atoi(input);
+        if (choice == 1)
+        {
+            //Enter Contiguous Allocation
+            contiguous();
+        }
+        else if (choice == 2)
+        {
 
-    //         //Space for Linked
-    //         linked();
-    //     }
-    //     else if (choice == 3)
-    //     {
-    //         indexed();
-    //     }
-    //     else if (choice == 4)
-    //     {
-    //         BSTindexed();
-    //         //custom();
-    //         //Space for custom
-    //     }
-    //     else
-    //         printf("Invalid choice, please enter between 1 - 4");
-    // } while (choice <= 0 || choice > 4);
+            //Space for Linked
+            linked();
+        }
+        else if (choice == 3)
+        {
+            indexed();
+        }
+        else if (choice == 4)
+        {
+            BSTindexed();
+        }
+        else if (choice == 5)
+        {
+            custom();
+        }
+        else
+            printf("Invalid choice, please enter between 1 - 5");
+    } while (choice <= 0 || choice > 5);
 
     return EXIT_SUCCESS;
 }

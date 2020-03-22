@@ -7,7 +7,9 @@ int BSTindexed(void)
 {
 
     printf("Enter name of .csv file to read from\n");
-    BSTindex_readCSV("SampleCSV.csv");
+    scanf("%s", &input);
+    //Enter .CSV file to run
+    BSTindex_readCSV(input);
     BSTindex_printallocation();
 }
 

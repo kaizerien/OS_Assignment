@@ -1,7 +1,7 @@
 #include "main.h"
 
 // unsigned char input[MAX_STRING_SIZE];
-//char file_name[MAX_STRING]; //No need
+//char file_name[MAX_STRING];
 // int file_name;
 // int filesize;
 // int columncount;
@@ -31,3 +31,6 @@ void index_updateIndexBlock(int f, int blockNum);
 
 void index_updateDirectory(int blockNum, int file_name, int f);
 void index_findreadfile(char f[]);
+
+
+
