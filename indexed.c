@@ -7,7 +7,6 @@ int indexed(void)
     printf("Enter name of .csv file to read from\n");
     // scanf("%s", &input);
     index_readCSV("Test2.csv");
-    index_printvcb();
     index_printallocation();
 
 }
@@ -42,9 +41,18 @@ void index_allocation(char *data)
             file_name = atoi(data);
             //Reserve index block for each fileName
             if(checkfsm()!= -1){
-            index_reserveBlock(file_name);
-            printf("Adding file%i and found free B%i \n", file_name, blockNum);
-            indexDiskSpace = TRUE;
+                //Prevent adding from happening if directory structure is full.
+                if (directEntry < superblockSize){  //direct entry is the counter for how many rows directory structure is going to have. superblocksize is block 0 size.
+                    index_reserveBlock(file_name);
+                    printf("Adding file%i and found free B%i \n", file_name, blockNum);
+                    indexDiskSpace = TRUE;
+                }
+                else if(directEntry>superblockSize-1){
+                    printf("\nNot enough space in Directory Structure, adding file%i failed. \n", file_name);
+                    directEntry--;
+                    indexDiskSpace = FALSE;
+                    break;
+                }
             }
             else{
                 printf("No more available blocks!");
@@ -105,7 +113,6 @@ void index_allocation(char *data)
                 }
             }
         }
-        vcbfunc(nodes);
         break;
     case read:
         timer = 0;
@@ -152,15 +159,15 @@ void index_allocation(char *data)
             {
                 first = 1;
                 printf("Deletion of File %i and its index block succeeded \n", atoi(data));
-                strcpy(nodes[0][0].data, vcbString);
                 // index_printvcb();
+                vcbfunc(nodes);
+
             }
         }
         else if (atoi(data) % 100 != 0 && first == 0)
         {
             printf("Please enter a correct file name. \n");
         }
-        vcbfunc(nodes);
         break;
     }
 }
@@ -269,9 +276,6 @@ void index_updateDirectory(int blockNum, int file_name, int choice)
             }
         }
     }
-    else if (directEntry < superblockSize)
-    {
-    }
 }
 
 int index_updateReserved(int fileName)
@@ -353,7 +357,7 @@ void index_savetofile(int f, char d[], int blockNum)
     strcpy(nodes[blockNum][columncount].data, d);
     strcat(dataString, d);
     strcat(dataString, ",");
-
+    vcbfunc(nodes);
     // printf("%i \n", nodes[blockNum][columncount].filename);
     // printf("%s \n", nodes[blockNum][columncount].data);
 }
@@ -424,7 +428,8 @@ int index_randomBlock()
 }
 
 void index_printallocation()
-{
+{   
+    printvcb();
     printf("Index\tBlock No.\tFile No.\tData\t \n");
 
     for (int j=0; j<superblockSize; j++){
@@ -485,22 +490,22 @@ void index_getData(char buffer[])
         token = strtok(NULL, ", ");
     }
 }
-void index_printvcb()
-{
-    int i = 0;
-    char *token = strtok(nodes[0][0].data, ",");
-    while (token)
-    {
-        strcpy(vcbStringPrint[i], token);
-        token = strtok(NULL, ",");
-        ++i;
-    }
+// void index_printvcb()
+// {
+//     int i = 0;
+//     char *token = strtok(nodes[0][0].data, ",");
+//     while (token)
+//     {
+//         strcpy(vcbStringPrint[i], token);
+//         token = strtok(NULL, ",");
+//         ++i;
+//     }
 
-    printf("\n---------------------------\n");
-    printf("Number of Blocks:%s\n", vcbStringPrint[0]);
-    printf("Block Size:%s\n", vcbStringPrint[1]);
-    printf("Number of free:%s\n", vcbStringPrint[2]);
-    printf("FSM String:%s\n", vcbStringPrint[3]);
-    printf("\n---------------------------\n");
+//     printf("\n---------------------------\n");
+//     printf("Number of Blocks:%s\n", vcbStringPrint[0]);
+//     printf("Block Size:%s\n", vcbStringPrint[1]);
+//     printf("Number of free:%s\n", vcbStringPrint[2]);
+//     printf("FSM String:%s\n", vcbStringPrint[3]);
+//     printf("\n---------------------------\n");
 
-}
+// }
