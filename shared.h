@@ -26,6 +26,7 @@ int filenodes;
 int deleted = 0;
 int directEntry = 0;
 int timer;
+int index_directEntry = 1;
 int readDone = 0;
 
 int starting_index = 0;
@@ -187,7 +188,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     filelength = atoi(readtoken);
 
                     printf("\nFilename of %d,Starting Block is %d ", filename, blockNum);
-
+                  
                     if ((lastBlock_or_file % 100) != 0)
                     {
                         if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
