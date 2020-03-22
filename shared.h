@@ -128,7 +128,7 @@ void updateDirectory(int blockNum, int filename, int state)
             if (strcmp(nodes[0][i].data, "\0"))
             {
                 strcpy(temp, nodes[0][i].data);
-                printf("test %s", nodes[0][i].data);
+
                 readtoken = strtok(temp, ", ");
                 if (atoi(readtoken) == filename)
                 {
@@ -147,7 +147,7 @@ void updateDirectory(int blockNum, int filename, int state)
     }
 }
 
-void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock)
+void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock_or_file)
 {
     int done = FALSE;
     char temp[10];
@@ -166,7 +166,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     strcat(nodes[0][i].data, ", ");
                     strcat(nodes[0][i].data, itoa(starting_index, temp, 10));
                     strcat(nodes[0][i].data, ", ");
-                    strcat(nodes[0][i].data, itoa(lastBlock, temp, 10));
+                    strcat(nodes[0][i].data, itoa(lastBlock_or_file, temp, 10));
                     done = TRUE;
                     return;
                 }
@@ -186,7 +186,38 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     readtoken = strtok(NULL, " ");
                     filelength = atoi(readtoken);
 
-                    printf("Filename of %d Starting Block is %d ", filename, blockNum);
+                    printf("\nFilename of %d,Starting Block is %d ", filename, blockNum);
+
+                    if (lastBlock_or_file % 100 != 0)
+                    {
+                        int valid = 0;
+                        int new_block_file_content = blockNum;
+                        do
+                        {
+
+                            for (int i = 0; i < blockSize; i++)
+                            {
+                                if (i == blockSize - 1)
+                                {
+                                    if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
+                                    {
+                                        printf("No file content exists!\n");
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        new_block_file_content = atoi(nodes[new_block_file_content][i].data);
+                                    }
+                                }
+                                else if (atoi(nodes[new_block_file_content][i].data) == lastBlock_or_file)
+                                {
+                                    printf("\nFile data %d is in Block %d \n", lastBlock_or_file, blockNum);
+                                    valid = 1;
+                                    return;
+                                }
+                            }
+                        } while (valid == 0);
+                    }
                     if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
                     {
                         int new_blockNum = atoi(nodes[blockNum][blockSize - 1].data);
@@ -196,6 +227,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                             new_blockNum = atoi(nodes[new_blockNum][blockSize - 1].data);
                         } while (new_blockNum != 0);
                     }
+
                     printf("\n\n");
 
                     //printreadfile(blockNum, filename, filelength);
@@ -229,7 +261,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     strcat(nodes[0][i].data, ", ");
                     strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
                     strcat(nodes[0][i].data, ", ");
-                    strcat(nodes[0][i].data, itoa(lastBlock, temp, 10));
+                    strcat(nodes[0][i].data, itoa(lastBlock_or_file, temp, 10));
                     done = TRUE;
                     return;
                 }
@@ -276,9 +308,9 @@ void linked_findreadfile(char f[])
     {
         for (int j = 0; j < blockSize; j++)
         {
-            if (!strcmp(nodes[i][j].data, f))
+            if (atoi(nodes[i][j].data) == atoi(f))
             { //If user wants to read by file data
-                linked_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read, i);
+                linked_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read, atoi(f));
                 return;
             }
             else if ((atoi(f)) == nodes[i][j].filename)
