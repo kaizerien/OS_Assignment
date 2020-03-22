@@ -20,7 +20,6 @@ void vcbfunc(struct node nodes[MAX_BLOCK][MAX_BLOCK])
     itoa(noOfBlocks, maxblockchar, 10);
     itoa(blockSize, sizeofBlockchar, 10);
     itoa(noFreeBlocks, noFreeBlockschar, 10);
-    // vcbString = (char *)malloc(sizeof(maxblockchar) + sizeof(freeblockschar) + sizeof(sizeofBlockchar) + sizeof(freeblocks));
     strcpy(vcbString, maxblockchar);
     strcat(vcbString, ",");
     strcat(vcbString, sizeofBlockchar);
@@ -33,7 +32,27 @@ void vcbfunc(struct node nodes[MAX_BLOCK][MAX_BLOCK])
 
     vcbString[count + 1] = '\0';
     int j = snprintf(nodes[0][0].data, MAX_STRING_SIZE, "%s", vcbString);
-    // printf("%i",j);
+}
+void index_printvcb()
+{
+    int i = 0;
+    char temp[MAX_STRING_SIZE];
+    int j = snprintf(temp, MAX_STRING_SIZE, "%s", nodes[0][0].data);   
+    char *token = strtok(nodes[0][0].data, ",");
+    while (token)
+    {
+        strcpy(vcbStringPrint[i], token);
+        token = strtok(NULL, ",");
+        ++i;
+    }
+    j = snprintf(nodes[0][0].data, MAX_STRING_SIZE, "%s", temp);
+    printf("%s",nodes[0][0].data);
+
+    printf("\n---------------------------\n");
+    printf("Number of Blocks:%s\n", vcbStringPrint[0]);
+    printf("Block Size:%s\n", vcbStringPrint[1]);
+    printf("Number of free:%s\n", vcbStringPrint[2]);
+    printf("FSM String:%s\n", vcbStringPrint[3]);
 }
 
 #endif

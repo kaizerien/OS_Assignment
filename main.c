@@ -12,6 +12,7 @@ Description:
 #include "indexed.c"
 #include "linked.c"
 #include "custom.c"
+#include "BSTindexed.c"
 
 int main(void)
 {
@@ -20,7 +21,7 @@ int main(void)
     register int j = 0;
     unsigned char input[20];
     unsigned int choice = 0;
-    unsigned int format = 0;    
+    unsigned int format = 0;
     int counter = 0, blockIndex = 0;
 
     do
@@ -62,69 +63,78 @@ int main(void)
     superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
     initialize();
-   // linked();
+    linked();
+    // linked();
 
     //File system choice
-    do
-    {
-        printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
-        scanf("%s", &input);
-        choice = atoi(input);
-        if (choice == 1)
-        {
-            //Enter Contiguous Allocation
-            contiguous();
-        }
-        else if (choice == 2)
-        {
+    // do
+    // {
+    //     printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
+    //     scanf("%s", &input);
+    //     choice = atoi(input);
+    //     if (choice == 1)
+    //     {
+    //         //Enter Contiguous Allocation
+    //         contiguous();
+    //     }
+    //     else if (choice == 2)
+    //     {
 
-            //Space for Linked
-            linked();
-        }
-        else if (choice == 3)
-        {
-            indexed();
-        }
-        else if (choice == 4)
-        {
-            custom();
-            //Space for custom
-        }
-        else
-            printf("Invalid choice, please enter between 1 - 4");
-    } while (choice <= 0 || choice > 4);
+    //         //Space for Linked
+    //         linked();
+    //     }
+    //     else if (choice == 3)
+    //     {
+    //         indexed();
+    //     }
+    //     else if (choice == 4)
+    //     {
+    //         BSTindexed();
+    //         //custom();
+    //         //Space for custom
+    //     }
+    //     else
+    //         printf("Invalid choice, please enter between 1 - 4");
+    // } while (choice <= 0 || choice > 4);
 
     return EXIT_SUCCESS;
 }
 
 //Func to initialze blocks
-void initialize(){
+void initialize()
+{
     int index = 0;
-    for(int i = 0; i< noOfBlocks ; i++){
+    for (int i = 0; i < noOfBlocks; i++)
+    {
         //Initialize FSM string to 1
-        if(i != 0){
-            fsm[i-1] = '1'; //i-1 because FSM do not include superblock
+        if (i != 0)
+        {
+            fsm[i - 1] = '1'; //i-1 because FSM do not include superblock
         }
-        if(i == 0){
-            for(int k = 0; k < superblockSize; k++){ //For block 0 aka superblock
+        if (i == 0)
+        {
+            for (int k = 0; k < superblockSize; k++)
+            { //For block 0 aka superblock
                 nodes[i][k].blockNo = i;
                 strcpy(nodes[i][k].data, "\0");
                 nodes[i][k].filename = 0;
                 nodes[i][k].index = index;
                 index += 1;
-                printf("%d\t%d\t%d\t%s\n", nodes[i][k].index,nodes[i][k].blockNo, nodes[i][k].filename,nodes[i][k].data);
-            } 
-        }else{
-            for(int j = 0; j< blockSize ; j++){ //For rest of the block
+                printf("%d\t%d\t%d\t%s\n", nodes[i][k].index, nodes[i][k].blockNo, nodes[i][k].filename, nodes[i][k].data);
+            }
+        }
+        else
+        {
+            for (int j = 0; j < blockSize; j++)
+            { //For rest of the block
                 nodes[i][j].blockNo = i;
                 strcpy(nodes[i][j].data, "\0");
                 nodes[i][j].filename = 0;
                 nodes[i][j].index = index;
                 index += 1;
-                printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
+                printf("%d\t%d\t%d\t%s\n", nodes[i][j].index, nodes[i][j].blockNo, nodes[i][j].filename, nodes[i][j].data);
             }
         }
-        
     }
     printf("%s", fsm);
 }

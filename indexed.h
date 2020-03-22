@@ -1,16 +1,16 @@
 #include "main.h"
 
-unsigned char input[MAX_STRING_SIZE];
-//char file_name[MAX_STRING];
-int file_name;
-int filesize;
-int columncount;
-int filenodes;
-int deleted = 0;
-int directEntry = 1;
-int timer;
-int readDone = 0;
-char dataString[100];
+// unsigned char input[MAX_STRING_SIZE];
+//char file_name[MAX_STRING]; //No need
+// int file_name;
+// int filesize;
+// int columncount;
+// int filenodes;
+// int deleted = 0;
+// int directEntry = 1;
+// int timer;
+// int readDone = 0;
+// char dataString[100];
 bool indexDiskSpace;
 
 void index_readCSV(char input[]);
