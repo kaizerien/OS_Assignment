@@ -63,9 +63,8 @@ int main(void)
     superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
     initialize();
-    linked();
-    // linked();
 
+    BSTindexed();
     //File system choice
     // do
     // {
