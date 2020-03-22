@@ -72,7 +72,7 @@ void linkedAllocation(char *data)
                         nodes[previous_curBlock][blockSize - 1].filename = file_name;
                         strcpy(nodes[previous_curBlock][blockSize - 1].data, char_curBlock);
 
-                        //                        updateDirectory(((previous_curBlock + 1) - filelength), file_name, overwrite);
+                        //updateDirectory(((previous_curBlock + 1) - filelength), file_name, overwrite);
 
                         printf("Adding file %i and found free block %i\n", file_name, curBlock);
 
@@ -103,7 +103,7 @@ void linkedAllocation(char *data)
         if (atoi(data) != 0)
         {
             //Find if file exist
-            findreadfile(data);
+            linked_findreadfile(data);
         }
         vcbfunc(nodes);
         strcpy(nodes[0][0].data, vcbString);
@@ -119,7 +119,6 @@ void linkedAllocation(char *data)
         break;
     }
 }
-
 
 void linked_readCSV(char input[])
 {
@@ -157,4 +156,3 @@ void linked_getData(char buffer[])
         linkedAllocation(copy[i]);
     }
 }
-

@@ -6,6 +6,7 @@ void printallocation();
 int checkspace(int n, int k);
 void savetofile(int f, char d[]);
 void findreadfile(char f[]);
+void linked_findreadfile(char f[]);
 void finddeletefile(int f);
 void deletecontent(int f);
 void updateDirectory(int blockNum, int file_name, int state);
@@ -27,7 +28,7 @@ int directEntry = 0;
 int timer;
 int readDone = 0;
 
-int starting_index;
+int starting_index = 0;
 char dataString[100];
 
 void printallocation()
@@ -127,6 +128,7 @@ void updateDirectory(int blockNum, int filename, int state)
             if (strcmp(nodes[0][i].data, "\0"))
             {
                 strcpy(temp, nodes[0][i].data);
+                printf("test %s", nodes[0][i].data);
                 readtoken = strtok(temp, ", ");
                 if (atoi(readtoken) == filename)
                 {
@@ -162,7 +164,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                 {
                     strcpy(nodes[0][i].data, itoa(filename, temp, 10));
                     strcat(nodes[0][i].data, ", ");
-                    strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
+                    strcat(nodes[0][i].data, itoa(starting_index, temp, 10));
                     strcat(nodes[0][i].data, ", ");
                     strcat(nodes[0][i].data, itoa(lastBlock, temp, 10));
                     done = TRUE;
@@ -175,6 +177,7 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
             if (strcmp(nodes[0][i].data, "\0"))
             {
                 strcpy(temp, nodes[0][i].data);
+
                 readtoken = strtok(temp, ", ");
                 if (atoi(readtoken) == filename)
                 {
@@ -182,7 +185,20 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     blockNum = atoi(readtoken);
                     readtoken = strtok(NULL, " ");
                     filelength = atoi(readtoken);
-                    printreadfile(blockNum, filename, filelength);
+
+                    printf("Filename of %d Starting Block is %d ", filename, blockNum);
+                    if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
+                    {
+                        int new_blockNum = atoi(nodes[blockNum][blockSize - 1].data);
+                        do
+                        {
+                            printf("-> %d", new_blockNum);
+                            new_blockNum = atoi(nodes[new_blockNum][blockSize - 1].data);
+                        } while (new_blockNum != 0);
+                    }
+                    printf("\n\n");
+
+                    //printreadfile(blockNum, filename, filelength);
                 }
             }
             break;
@@ -211,9 +227,8 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                     strcpy(nodes[0][i].data, "\0");
                     strcpy(nodes[0][i].data, itoa(filename, temp, 10));
                     strcat(nodes[0][i].data, ", ");
-                    strcat(nodes[0][i].data, itoa(starting_index, temp, 10));
+                    strcat(nodes[0][i].data, itoa(blockNum, temp, 10));
                     strcat(nodes[0][i].data, ", ");
-                    
                     strcat(nodes[0][i].data, itoa(lastBlock, temp, 10));
                     done = TRUE;
                     return;
@@ -254,25 +269,36 @@ void findreadfile(char f[])
     }
 }
 
-//Func to output the file user wants to read
-void printreadfile(int blockNo, int filename, int length)
+void linked_findreadfile(char f[])
 {
-    printf("Read file %i from block %i\n", filename, blockNo);
-    for (int i = 0; i < blockSize; i++)
+    int found = TRUE;
+    for (int i = 1; i < noOfBlocks; i++)
     {
-        if (strcmp(nodes[blockNo][i].data, "\0"))
+        for (int j = 0; j < blockSize; j++)
         {
-            printf("%d\t%d\t%d\t%s\n", nodes[blockNo][i].index, nodes[blockNo][i].blockNo, nodes[blockNo][i].filename, nodes[blockNo][i].data);
+            if (!strcmp(nodes[i][j].data, f))
+            { //If user wants to read by file data
+                linked_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read, i);
+                return;
+            }
+            else if ((atoi(f)) == nodes[i][j].filename)
+            { //If user want tor ead by file name
+                linked_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read, i);
+                return;
+            }
+            else
+            {
+                found = FALSE;
+            }
         }
     }
-    //Recursively access other blocks if file uses more then one block
-    if (length > 1)
+    if (found == FALSE)
     {
-        printreadfile(blockNo + 1, filename, length - 1);
+        printf("File %s not found on disk\n", f);
     }
 }
-
-void linked_printreadfile(int blockNo, int filename, int length)
+//Func to output the file user wants to read
+void printreadfile(int blockNo, int filename, int length)
 {
     printf("Read file %i from block %i\n", filename, blockNo);
     for (int i = 0; i < blockSize; i++)
