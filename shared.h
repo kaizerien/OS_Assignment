@@ -188,7 +188,19 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
 
                     printf("\nFilename of %d,Starting Block is %d ", filename, blockNum);
 
-                    if (lastBlock_or_file % 100 != 0)
+                    if ((lastBlock_or_file % 100) != 0)
+                    {
+                        if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
+                        {
+                            int new_blockNum = atoi(nodes[blockNum][blockSize - 1].data);
+                            do
+                            {
+                                printf("-> %d", new_blockNum);
+                                new_blockNum = atoi(nodes[new_blockNum][blockSize - 1].data);
+                            } while (new_blockNum != 0);
+                        }
+                    }
+                    else
                     {
                         int valid = 0;
                         int new_block_file_content = blockNum;
@@ -217,15 +229,6 @@ void linked_updateDirectory(int blockNum, int filename, int state, int lastBlock
                                 }
                             }
                         } while (valid == 0);
-                    }
-                    if (strcmp(nodes[blockNum][blockSize - 1].data, "\0"))
-                    {
-                        int new_blockNum = atoi(nodes[blockNum][blockSize - 1].data);
-                        do
-                        {
-                            printf("-> %d", new_blockNum);
-                            new_blockNum = atoi(nodes[new_blockNum][blockSize - 1].data);
-                        } while (new_blockNum != 0);
                     }
 
                     printf("\n\n");
