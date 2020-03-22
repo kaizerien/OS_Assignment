@@ -42,9 +42,18 @@ void index_allocation(char *data)
             file_name = atoi(data);
             //Reserve index block for each fileName
             if(checkfsm()!= -1){
-            index_reserveBlock(file_name);
-            printf("Adding file%i and found free B%i \n", file_name, blockNum);
-            indexDiskSpace = TRUE;
+                //Prevent adding from happening if directory structure is full.
+                if (directEntry < superblockSize){  //direct entry is the counter for how many rows directory structure is going to have. superblocksize is block 0 size.
+                    index_reserveBlock(file_name);
+                    printf("Adding file%i and found free B%i \n", file_name, blockNum);
+                    indexDiskSpace = TRUE;
+                }
+                else if(directEntry>superblockSize-1){
+                    printf("\nNot enough space in Directory Structure, adding file%i failed. \n", file_name);
+                    directEntry--;
+                    indexDiskSpace = FALSE;
+                    break;
+                }
             }
             else{
                 printf("No more available blocks!");
@@ -268,9 +277,6 @@ void index_updateDirectory(int blockNum, int file_name, int choice)
                 }
             }
         }
-    }
-    else if (directEntry < superblockSize)
-    {
     }
 }
 

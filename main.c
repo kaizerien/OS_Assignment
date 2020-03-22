@@ -11,6 +11,7 @@ Description:
 #include "contiguous.c"
 #include "indexed.c"
 #include "linked.c"
+#include "custom.c"
 
 int main(void)
 {
@@ -86,6 +87,7 @@ int main(void)
         }
         else if (choice == 4)
         {
+            custom();
             //Space for custom
         }
         else
