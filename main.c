@@ -8,20 +8,20 @@ Description:
 -----------------------------------------------------------------------------------------------*/
 
 #include "main.h"
-#include "readCSV.c"
-#include "readCSV.h"
+#include "contiguous.c"
 #include "indexed.c"
-#include "indexed.h"
+#include "linked.c"
 
 int main(void)
 {
+
     register int i = 0;
     register int j = 0;
     unsigned char input[20];
     unsigned int choice = 0;
-    unsigned int format = 0;
+    unsigned int format = 0;    
     int counter = 0, blockIndex = 0;
-    void indexed();
+
     do
     {
         printf("Type Y to format File System or N to exit\n");
@@ -53,47 +53,17 @@ int main(void)
     {
         printf("\nEnter required block size: ");
         scanf("%s", &input);
+        //Convert the input to become a int
         blockSize = atoi(input);
     } while (blockSize < 0 || blockSize > 130);
-    noOfBlocks = (float)MAX_BLOCK / blockSize; // If is 6 , 20 block is created
 
-    noOfBlocks = ((noOfBlocks - (int)noOfBlocks) != 0 ) ? noOfBlocks - 1 : noOfBlocks; // Once divided, if it is not a whole number, the noOfBlocks will -1.
+    noOfBlocks = MAX_BLOCK / blockSize;
+    superblockSize = blockSize + (MAX_BLOCK % blockSize); //Add unused/extra nodes to block 0 aka superblock
 
-    
-    printf("Block\t\tIndex\tFile Data\n");
+    initialize();
+   // linked();
 
-    while (counter < MAX_BLOCK) //Counter 0 to 130
-    {
-        // for (j = 0; j < blockSize; j++) //0 to input blockSize, e.g. 0 to 5
-        // {
-        //     node[j].index = counter;
-        //     node[j].blockNo = blockIndex; //Assign e.g. Node 0 to 5 with block Index 0 for first iteration, and 6 to 11 with block Index 1 and so on.
-
-        //     //If counter == 130 entries, j = blockSize to stop the for loop, if not then another if statement. 
-        //     // If noOfBlocks less than blockIndex e.g. noOfBlocks is 20, blockIndex will continue over 20, will print "unassigned" and Index. If false, will print Block No, and Index.
-        //     (counter == MAX_BLOCK) ? j = blockSize : (noOfBlocks < blockIndex) ? printf("Unassigned\t%d\n", node[j].index): printf("%d\t\t%d\n", node[j].blockNo, node[j].index); 
-        //     counter++;
-        // }
-        // blockIndex++; //Keep iterating +1 so can use in for loop to assign.
-        node[counter].index = counter;  //Set index 
-        strcpy(node[counter].data, "\0");   //Set data to empty for all nodes     
-        
-        if (node[counter].index % blockSize-1 == 0 && node[counter].index != 0 && node[counter].index != 1){
-            blockIndex++;
-        }
-        
-        node[counter].blockNo = blockIndex;
-
-        printf("%d\t\t%d\t\t%d\n", node[counter].blockNo, node[counter].index, blockIndex); 
-        counter++;
-
-    }
-         
-    //Read CSV File
-    printf("Enter name of .csv file to read from\n");
-    scanf("%s", &input);
-    readCSV(input);
-    printf("after read");
+    //File system choice
     do
     {
         printf("\nEnter choice for file system: \n1: Contiguous Allocation\n2: Linked Allocation\n3: Indexed Allocation\n4: Custom Allocation\n");
@@ -101,20 +71,18 @@ int main(void)
         choice = atoi(input);
         if (choice == 1)
         {
-            //Space for Contiguous
+            //Enter Contiguous Allocation
+            contiguous();
         }
         else if (choice == 2)
         {
+
             //Space for Linked
+            linked();
         }
         else if (choice == 3)
         {
-            printf("inside cehoice");
-
-            // for (j=0; j<50; j++){
-            // printf("CSV array: %s\n", CSV_Data[j]);
-            //  }
-            // indexed();
+            indexed();
         }
         else if (choice == 4)
         {
@@ -124,5 +92,37 @@ int main(void)
             printf("Invalid choice, please enter between 1 - 4");
     } while (choice <= 0 || choice > 4);
 
+    return EXIT_SUCCESS;
+}
 
+//Func to initialze blocks
+void initialize(){
+    int index = 0;
+    for(int i = 0; i< noOfBlocks ; i++){
+        //Initialize FSM string to 1
+        if(i != 0){
+            fsm[i-1] = '1'; //i-1 because FSM do not include superblock
+        }
+        if(i == 0){
+            for(int k = 0; k < superblockSize; k++){ //For block 0 aka superblock
+                nodes[i][k].blockNo = i;
+                strcpy(nodes[i][k].data, "\0");
+                nodes[i][k].filename = 0;
+                nodes[i][k].index = index;
+                index += 1;
+                printf("%d\t%d\t%d\t%s\n", nodes[i][k].index,nodes[i][k].blockNo, nodes[i][k].filename,nodes[i][k].data);
+            } 
+        }else{
+            for(int j = 0; j< blockSize ; j++){ //For rest of the block
+                nodes[i][j].blockNo = i;
+                strcpy(nodes[i][j].data, "\0");
+                nodes[i][j].filename = 0;
+                nodes[i][j].index = index;
+                index += 1;
+                printf("%d\t%d\t%d\t%s\n", nodes[i][j].index,nodes[i][j].blockNo, nodes[i][j].filename,nodes[i][j].data);
+            }
+        }
+        
+    }
+    printf("%s", fsm);
 }
