@@ -6,45 +6,52 @@ struct nodeBST
 {
     int fileNo;
     int blockNo;
+    int counter;
     struct nodeBST *left;
     struct nodeBST *right;
 } * root;
 
-struct nodeBST *createNode(int value, int value2);
-struct nodeBST *insert(struct nodeBST *root, int fileNo, int blockNo);
+struct nodeBST *createNode(int value, int value2, int counter);
+struct nodeBST *insert(struct nodeBST *root, int fileNo, int blockNo, int counter);
 struct nodeBST *minValueNode(struct nodeBST *node);
 bool checkFileExist(struct nodeBST *root, int fileNo);
 struct nodeBST *deleteNode(struct nodeBST *root, int fileNo);
 void inorder(struct nodeBST *root);
+struct nodeBST *insertByCounter(struct nodeBST *root, int fileNo, int blockNo, int counter);
+struct nodeBST *readNode(struct nodeBST *root, int fileNo);
 
-struct nodeBST *createNode(int value, int value2)
+
+int counter_struct = 0;
+
+struct nodeBST *createNode(int value, int value2, int counter)
 {
     struct nodeBST *newNode = malloc(sizeof(struct nodeBST));
     newNode->fileNo = value;
     newNode->blockNo = value2;
+    newNode->counter = counter;
     newNode->left = NULL;
     newNode->right = NULL;
 
     return newNode;
 }
 
-struct nodeBST *insert(struct nodeBST *root, int fileNo, int blockNo)
+struct nodeBST *insert(struct nodeBST *root, int fileNo, int blockNo, int counter)
 {
     if (root == NULL)
-        return createNode(fileNo, blockNo);
+        return createNode(fileNo, blockNo, counter);
 
     //if fileNo is lesser than the root fileNo
     if (fileNo < root->fileNo)
-        root->left = insert(root->left, fileNo, blockNo);
+        root->left = insert(root->left, fileNo, blockNo, counter);
     else if (fileNo == root->fileNo) //if fileNo is the same, meaning entries from same file
     {
         if (blockNo < root->blockNo)
-            root->left = insert(root->left, fileNo, blockNo);
+            root->left = insert(root->left, fileNo, blockNo, counter);
         else if (blockNo > root->blockNo)
-            root->right = insert(root->right, fileNo, blockNo);
+            root->right = insert(root->right, fileNo, blockNo, counter);
     }
     else if (fileNo > root->fileNo)
-        root->right = insert(root->right, fileNo, blockNo);
+        root->right = insert(root->right, fileNo, blockNo,counter);
     //inorder(root);
     //printf("\n");
     return root;
@@ -162,12 +169,46 @@ struct nodeBST *deleteNodebyBlock(struct nodeBST *root, int fileNo, int blockNo)
     return root;
 }
 
+//ready by fileNo Only.
+struct nodeBST *readNode(struct nodeBST *root, int fileNo)
+{
+    struct nodeBST *file;
+    // base case
+    if (root == NULL)
+        return root;
+    if (fileNo < root->fileNo)
+        root->left = readNode(root->left, fileNo);
+    else if (fileNo > root->fileNo)
+        root->right = readNode(root->right, fileNo);
+    else
+    {
+        file = insertByCounter(file, root->fileNo, root->blockNo, root->counter);
+    }
+    if (checkFileExist(root, fileNo) == false)
+        readNode(root, fileNo);
+    return root;
+}
+
+//Insert By Counter for only 1 fileNo
+struct nodeBST *insertByCounter(struct nodeBST *root, int fileNo, int blockNo, int counter)
+{
+    if (root == NULL)
+        return createNode(fileNo, blockNo, counter);
+    if (counter < root->counter)
+        root->left = insert(root->left, fileNo, blockNo, counter);
+    else if (counter > root->counter)
+        root->right = insert(root->right, fileNo, blockNo,counter);
+    return root;
+}
+
+
 void inorder(struct nodeBST *root)
 {
     if (root == NULL)
         return;
+    
     inorder(root->left);
-    printf("%d, %d ->", root->fileNo, root->blockNo);
+    printf("\nFileNo: %d, BlockNo: %d, Counter:%d \n", root->fileNo, root->blockNo, root->counter);
     inorder(root->right);
 }
 

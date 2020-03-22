@@ -79,6 +79,8 @@ void BSTindex_allocation(char *data)
             filenodes = 0;   // indication for file using how many nodes
             deleted = 0;     //reset deleted counter for each file
             file_name = atoi(data);
+            counter_struct = 1;
+            root = insert(root, file_name, blockNum, counter_struct);
         }
         else
         {
@@ -96,16 +98,20 @@ void BSTindex_allocation(char *data)
                     { // If file size bigger than block size
                         if (filenodes - 1 == blockSize)
                         { // Once reach end of block, go ahead and find new block
+                            root = insert(root, file_name, blockNum, counter_struct);
+                            counter_struct++;
+
                             blockNum = BSTindex_findNewBlock();
+                            root = insert(root, file_name, blockNum, counter_struct);
                             printf("Adding file%i and found free B%i \n", file_name, blockNum);
-                            //Insert into BST here for next block, same file
-                            root = insert(root, file_name, blockNum);
+
                             filenodes = 1;
                         }
                         BSTindex_savetofile(file_name, data, blockNum); // Save to file function will add data to nodes with global-variable blockNum.
                     }
                     else
                     {
+
                         BSTindex_savetofile(file_name, data, blockNum); // Save to file function will add data to nodes with global-variable blockNum.
                     }
                     columncount += 1; //Iterate this variable so i can use in index_savetofile.
@@ -130,14 +136,15 @@ void BSTindex_allocation(char *data)
         }
         if (atoi(data) != 0 && atoi(data) % 100 == 0)
         { //If read is given a file name straight away, it'll go to index_updateDirectory to output the blocks containing the file.
-
+            struct nodeBST *fileread;
             printf("\nReading file%i: \n", atoi(data));
-            
-            BSTindex_updateDirectory(0, atoi(data), read);
+            fileread = readNode(root, atoi(data)); //======================
+            inorder(fileread);
             return;
         }
         else if (atoi(data) != 0 && (atoi(data) % 100 != 0))
         { // If its a number thats not divisble by 100, like 105, 203
+
             BSTindex_findreadfile(data);
             return;
         }
@@ -154,7 +161,7 @@ void BSTindex_allocation(char *data)
         if (atoi(data) != 0 && atoi(data) % 100 == 0)
         {
             BSTindex_deletefile(atoi(data));
-            root = deleteNode(root, file_name); //==================
+            root = deleteNode(root, atoi(data)); //==================
         }
         else if (atoi(data) % 100 != 0 && first == 0)
         {
@@ -166,8 +173,10 @@ void BSTindex_allocation(char *data)
     }
 }
 
+//Useless
 void BSTindex_updateDirectory(int blockNum, int file_name, int choice)
 {
+    printf("%d", file_name);
     if (directEntry < superblockSize)
     {
         // printf("Inside update Directory\n");
@@ -177,27 +186,19 @@ void BSTindex_updateDirectory(int blockNum, int file_name, int choice)
         int length = 0;
         for (int i = 0; i < superblockSize; i++)
         {
-            if (choice == add && done != 1)
-            {
-                if (!strcmp(nodes[0][i + 1].data, "\0"))
-                {
-                    strcpy(nodes[0][i + 1].data, itoa(file_name, temp, 10));
-                    strcat(nodes[0][i + 1].data, ", ");
-                    strcat(nodes[0][i + 1].data, itoa(blockNum, temp, 10));
-                    done = 1; //Indicate done
-                    return;
-                }
-            }
-            else if (choice == read)
+            if (choice == read)
             { // Read entry from directory structure
                 if (strcmp(nodes[0][i].data, "\0"))
                 {                                   //If data is not null
                     strcpy(temp, nodes[0][i].data); //Copy into temp
                     readtoken = strtok(temp, ", "); //Split up by comma
                     blockNum = atoi(readtoken);     //Read entry, compare if blockNum is = to entered data
+                    printf("%d\n\n", file_name);
+                    printf("%d\n\n", atoi(readtoken));
                     if (atoi(readtoken) == file_name)
                     {
-                        readtoken = strtok(NULL, " ");
+
+                        readtoken = strtok(NULL, ", ");
                         blockNum = atoi(readtoken);
                         for (int i = 0; i < blockSize; i++)
                         {
@@ -210,9 +211,9 @@ void BSTindex_updateDirectory(int blockNum, int file_name, int choice)
                         }
                         printf("Time: %i\n\n", timer); //Print timer counter for traversal of array
                     }
-                    else if (readDone == 0)
+                    else
                     {
-                        printf("File does not exist! index_updateDirectory \n");
+                        printf("File does not exist!\n");
                     }
                 }
             }
@@ -299,20 +300,21 @@ void BSTindex_deleteblock(int block, int f)
 
 void BSTindex_printallocation()
 {
+
     for (int i = 0; i < noOfBlocks; i++)
     {
         if (i == 0)
         {
             for (int k = 0; k < superblockSize; k++)
             {
-                printf("%d\t%d\t%d\t%s\t%i \n", nodes[i][k].index, nodes[i][k].blockNo, nodes[i][k].filename, nodes[i][k].data);
+                printf("%d\t%d\t%d\t%s \n", nodes[i][k].index, nodes[i][k].blockNo, nodes[i][k].filename, nodes[i][k].data);
             }
         }
         else
         {
             for (int j = 0; j < blockSize; j++)
             {
-                printf("%d\t%d\t%d\t%s\t%i \n", nodes[i][j].index, nodes[i][j].blockNo, nodes[i][j].filename, nodes[i][j].data);
+                printf("%d\t%d\t%d\t%s \n", nodes[i][j].index, nodes[i][j].blockNo, nodes[i][j].filename, nodes[i][j].data);
             }
         }
     }
@@ -353,12 +355,13 @@ void BSTindex_findreadfile(char f[])
         {
             // printf("i is %i, j is %i, data is %i, f is %i\n", i,j, atoi(nodes[i][j].data), atoi(f));
             if (atoi(nodes[i][j].data) == atoi(f))
-            {            //Compare .data with f, which is for e.g. 106. Then will use it's blockNum for READ function
-                timer++; //Timer variable increment for READ
+            { //Compare .data with f, which is for e.g. 106. Then will use it's blockNum for READ function
+                // timer++; //Timer variable increment for READ
                 if (readDone == 0)
                 {
                     printf("Reading file%i(%i): \n", nodes[i][j].filename, atoi(f));
-                    BSTindex_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read);
+                    custom_updateDirectory(atoi(f), file_name);
+                    //BSTindex_updateDirectory(nodes[i][j].blockNo, nodes[i][j].filename, read);
                     fileValid = 1;
                     return;
                 }

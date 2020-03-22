@@ -64,7 +64,7 @@ int main(void)
 
     initialize();
 
-    BSTindexed();
+    linked();
     //File system choice
     // do
     // {
